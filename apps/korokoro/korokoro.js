@@ -1,6 +1,3 @@
-const homeView = document.querySelector("#homeView");
-const korokoroView = document.querySelector("#korokoroView");
-const backButton = document.querySelector("#backButton");
 const pad = document.querySelector("#pad");
 const soundButton = document.querySelector("#soundButton");
 const feelSlider = document.querySelector("#feelSlider");
@@ -18,18 +15,6 @@ let soundEnabled = true;
 let activePointerId = null;
 let lastTile = null;
 let lastHitAt = 0;
-
-function showView(viewName) {
-  const isKorokoro = viewName === "korokoro";
-
-  homeView.classList.toggle("active", !isKorokoro);
-  korokoroView.classList.toggle("active", isKorokoro);
-  document.body.classList.toggle("pad-open", isKorokoro);
-
-  if (!isKorokoro && "vibrate" in navigator) {
-    navigator.vibrate(0);
-  }
-}
 
 function createTiles() {
   const fragment = document.createDocumentFragment();
@@ -153,16 +138,6 @@ function tileFromPoint(event) {
   return document.elementFromPoint(event.clientX, event.clientY)?.closest(".tile");
 }
 
-document.querySelectorAll("[data-open-app]").forEach((button) => {
-  button.addEventListener("click", () => {
-    showView(button.dataset.openApp);
-  });
-});
-
-backButton.addEventListener("click", () => {
-  showView("home");
-});
-
 pad.addEventListener("pointerdown", (event) => {
   event.preventDefault();
   activePointerId = event.pointerId;
@@ -206,4 +181,3 @@ soundButton.addEventListener("click", () => {
 });
 
 createTiles();
-showView("home");

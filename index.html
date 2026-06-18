@@ -8,14 +8,14 @@
   </head>
   <body>
     <main class="app" aria-label="おとあそび">
-      <section class="view view-home active" id="homeView" aria-label="アプリ一覧">
+      <section class="home-view" aria-label="アプリ一覧">
         <header class="home-hero">
           <p class="eyebrow">Sound Apps</p>
           <h1>おとあそび</h1>
         </header>
 
         <section class="app-grid" aria-label="音アプリ">
-          <button class="app-card app-card-primary" type="button" data-open-app="korokoro">
+          <a class="app-card app-card-primary" href="apps/korokoro/">
             <span class="card-art korokoro-art" aria-hidden="true">
               <span></span>
               <span></span>
@@ -31,9 +31,9 @@
               <strong>コロコロ</strong>
               <small>Touch Pad</small>
             </span>
-          </button>
+          </a>
 
-          <button class="app-card" type="button" disabled>
+          <article class="app-card app-card-disabled" aria-disabled="true">
             <span class="card-art wave-art" aria-hidden="true">
               <span></span>
               <span></span>
@@ -44,9 +44,9 @@
               <strong>なみ</strong>
               <small>Coming Soon</small>
             </span>
-          </button>
+          </article>
 
-          <button class="app-card" type="button" disabled>
+          <article class="app-card app-card-disabled" aria-disabled="true">
             <span class="card-art pop-art" aria-hidden="true">
               <span></span>
               <span></span>
@@ -56,9 +56,9 @@
               <strong>ポコポコ</strong>
               <small>Coming Soon</small>
             </span>
-          </button>
+          </article>
 
-          <button class="app-card" type="button" disabled>
+          <article class="app-card app-card-disabled" aria-disabled="true">
             <span class="card-art spark-art" aria-hidden="true">
               <span></span>
               <span></span>
@@ -69,40 +69,9 @@
               <strong>キラキラ</strong>
               <small>Coming Soon</small>
             </span>
-          </button>
+          </article>
         </section>
-      </section>
-
-      <section class="view view-pad" id="korokoroView" aria-label="コロコロ">
-        <header class="topbar">
-          <button class="icon-button" id="backButton" type="button" aria-label="アプリ一覧へ戻る">
-            <span aria-hidden="true">←</span>
-          </button>
-          <div>
-            <p class="eyebrow">Korokoro</p>
-            <h2>コロコロ</h2>
-          </div>
-          <button class="sound-button" id="soundButton" type="button" aria-pressed="true">Sound On</button>
-        </header>
-
-        <section class="pad-shell" aria-label="Sound and vibration pad">
-          <div class="pad" id="pad"></div>
-        </section>
-
-        <footer class="controlbar">
-          <label class="control">
-            <span>Feel</span>
-            <input id="feelSlider" type="range" min="1" max="5" value="3" />
-          </label>
-          <label class="control">
-            <span>Tone</span>
-            <input id="toneSlider" type="range" min="1" max="5" value="3" />
-          </label>
-          <p class="status" id="statusText" role="status">Ready</p>
-        </footer>
       </section>
     </main>
-
-    <script src="app.js"></script>
   </body>
 </html>
