@@ -219,12 +219,14 @@ a.app-card:active {
 }
 
 .pop-art,
-.spark-art {
+.spark-art,
+.puni-art {
   background: linear-gradient(145deg, #fff7d6, #f3ecff);
 }
 
 .pop-art span,
-.spark-art span {
+.spark-art span,
+.puni-art span {
   position: absolute;
   border-radius: 50%;
 }
@@ -282,6 +284,42 @@ a.app-card:active {
   right: 34%;
   bottom: 34%;
   background: var(--red);
+}
+
+.puni-art {
+  background: linear-gradient(145deg, #ffe3ef, #ede9ff 58%, #ddfbf4);
+}
+
+.puni-art span {
+  border-radius: 38% 62% 54% 46% / 46% 44% 56% 54%;
+  box-shadow:
+    inset 8px 8px 13px rgba(255, 255, 255, 0.45),
+    inset -8px -10px 16px rgba(18, 24, 38, 0.09),
+    0 10px 22px rgba(18, 24, 38, 0.1);
+}
+
+.puni-art span:nth-child(1) {
+  width: 62px;
+  height: 56px;
+  left: 15%;
+  top: 24%;
+  background: #e9548f;
+}
+
+.puni-art span:nth-child(2) {
+  width: 74px;
+  height: 66px;
+  right: 13%;
+  top: 18%;
+  background: var(--violet);
+}
+
+.puni-art span:nth-child(3) {
+  width: 52px;
+  height: 48px;
+  left: 38%;
+  bottom: 14%;
+  background: var(--cyan);
 }
 
 .card-copy {
