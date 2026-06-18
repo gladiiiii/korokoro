@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>ぽこぽこ | おとあそび</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="pokopoko.css" />
+  </head>
+  <body class="pokopoko-page">
+    <main class="app" aria-label="ぽこぽこ">
+      <section class="bubble-view" aria-label="ぽこぽこ">
+        <header class="topbar">
+          <a class="icon-button" href="../../" aria-label="アプリ一覧へ戻る">
+            <span aria-hidden="true">←</span>
+          </a>
+          <div>
+            <p class="eyebrow">Pokopoko</p>
+            <h2>ぽこぽこ</h2>
+          </div>
+          <button class="sound-button" id="soundButton" type="button" aria-pressed="true">Sound On</button>
+        </header>
+
+        <section class="bubble-shell" aria-label="Bubble pad">
+          <div class="bubble-pad" id="bubblePad"></div>
+        </section>
+
+        <footer class="controlbar">
+          <label class="control">
+            <span>Pop</span>
+            <input id="popSlider" type="range" min="1" max="5" value="3" />
+          </label>
+          <label class="control">
+            <span>Size</span>
+            <input id="sizeSlider" type="range" min="1" max="5" value="3" />
+          </label>
+          <p class="status" id="statusText" role="status">Ready</p>
+        </footer>
+      </section>
+    </main>
+
+    <script src="pokopoko.js"></script>
+  </body>
+</html>

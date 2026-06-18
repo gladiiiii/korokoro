@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>なみ | おとあそび</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="nami.css" />
+  </head>
+  <body class="nami-page">
+    <main class="app" aria-label="なみ">
+      <section class="wave-view" aria-label="なみ">
+        <header class="topbar">
+          <a class="icon-button" href="../../" aria-label="アプリ一覧へ戻る">
+            <span aria-hidden="true">←</span>
+          </a>
+          <div>
+            <p class="eyebrow">Nami</p>
+            <h2>なみ</h2>
+          </div>
+          <button class="sound-button" id="soundButton" type="button" aria-pressed="true">Sound On</button>
+        </header>
+
+        <section class="wave-shell" aria-label="Wave pad">
+          <div class="wave-pad" id="wavePad"></div>
+        </section>
+
+        <footer class="controlbar">
+          <label class="control">
+            <span>Swell</span>
+            <input id="swellSlider" type="range" min="1" max="5" value="3" />
+          </label>
+          <label class="control">
+            <span>Tide</span>
+            <input id="tideSlider" type="range" min="1" max="5" value="3" />
+          </label>
+          <p class="status" id="statusText" role="status">Ready</p>
+        </footer>
+      </section>
+    </main>
+
+    <script src="nami.js"></script>
+  </body>
+</html>

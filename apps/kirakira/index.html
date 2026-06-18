@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>きらきら | おとあそび</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="kirakira.css" />
+  </head>
+  <body class="kirakira-page">
+    <main class="app" aria-label="きらきら">
+      <section class="sparkle-view" aria-label="きらきら">
+        <header class="topbar">
+          <a class="icon-button" href="../../" aria-label="アプリ一覧へ戻る">
+            <span aria-hidden="true">←</span>
+          </a>
+          <div>
+            <p class="eyebrow">Kirakira</p>
+            <h2>きらきら</h2>
+          </div>
+          <button class="sound-button" id="soundButton" type="button" aria-pressed="true">Sound On</button>
+        </header>
+
+        <section class="sparkle-shell" aria-label="Sparkle pad">
+          <div class="sparkle-pad" id="sparklePad"></div>
+        </section>
+
+        <footer class="controlbar">
+          <label class="control">
+            <span>Shine</span>
+            <input id="shineSlider" type="range" min="1" max="5" value="3" />
+          </label>
+          <label class="control">
+            <span>Pitch</span>
+            <input id="pitchSlider" type="range" min="1" max="5" value="3" />
+          </label>
+          <p class="status" id="statusText" role="status">Ready</p>
+        </footer>
+      </section>
+    </main>
+
+    <script src="kirakira.js"></script>
+  </body>
+</html>
