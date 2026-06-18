@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Korokoro</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="stage" aria-label="Korokoro vibration controller">
+        <div class="orb-wrap" aria-hidden="true">
+          <div class="track">
+            <div class="orb" id="orb"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div>
+            <p class="eyebrow">Vibration toy</p>
+            <h1>Korokoro</h1>
+            <p class="lead">ころころ転がるリズムを選んで、スマホの振動と画面の動きを楽しめます。</p>
+          </div>
+
+          <div class="controls" role="group" aria-label="Vibration patterns">
+            <button class="pattern-button active" type="button" data-pattern="roll">
+              <span>Roll</span>
+              <small>軽く連続</small>
+            </button>
+            <button class="pattern-button" type="button" data-pattern="bounce">
+              <span>Bounce</span>
+              <small>跳ねる</small>
+            </button>
+            <button class="pattern-button" type="button" data-pattern="pulse">
+              <span>Pulse</span>
+              <small>強め</small>
+            </button>
+          </div>
+
+          <div class="slider-row">
+            <label for="tempo">Tempo</label>
+            <input id="tempo" type="range" min="70" max="180" value="112" />
+            <output id="tempoOutput" for="tempo">112</output>
+          </div>
+
+          <div class="actions">
+            <button class="primary-button" id="playButton" type="button">Start</button>
+            <button class="ghost-button" id="tapButton" type="button">Tap</button>
+          </div>
+
+          <p class="status" id="statusText" role="status">パターンを選んで Start を押してください。</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
