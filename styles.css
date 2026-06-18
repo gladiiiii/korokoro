@@ -123,11 +123,6 @@ a.app-card:active {
   transform: scale(0.985);
 }
 
-.app-card-primary {
-  grid-column: 1 / -1;
-  min-height: 230px;
-}
-
 .app-card-disabled {
   opacity: 0.68;
 }
@@ -323,7 +318,4 @@ a.app-card:active {
     min-height: 168px;
   }
 
-  .app-card-primary {
-    min-height: 212px;
-  }
 }
