@@ -1,3 +1,6 @@
+const homeView = document.querySelector("#homeView");
+const korokoroView = document.querySelector("#korokoroView");
+const backButton = document.querySelector("#backButton");
 const pad = document.querySelector("#pad");
 const soundButton = document.querySelector("#soundButton");
 const feelSlider = document.querySelector("#feelSlider");
@@ -8,13 +11,25 @@ const columns = window.matchMedia("(max-width: 380px)").matches ? 5 : 6;
 const rows = window.matchMedia("(max-width: 380px)").matches ? 11 : 10;
 const tileCount = columns * rows;
 const notes = [196, 220, 247, 262, 294, 330, 370, 392, 440, 494, 523, 587];
+const AudioEngine = window.AudioContext || window.webkitAudioContext;
 
 let audioContext;
 let soundEnabled = true;
 let activePointerId = null;
 let lastTile = null;
 let lastHitAt = 0;
-const AudioEngine = window.AudioContext || window.webkitAudioContext;
+
+function showView(viewName) {
+  const isKorokoro = viewName === "korokoro";
+
+  homeView.classList.toggle("active", !isKorokoro);
+  korokoroView.classList.toggle("active", isKorokoro);
+  document.body.classList.toggle("pad-open", isKorokoro);
+
+  if (!isKorokoro && "vibrate" in navigator) {
+    navigator.vibrate(0);
+  }
+}
 
 function createTiles() {
   const fragment = document.createDocumentFragment();
@@ -80,11 +95,7 @@ function vibrate(tile) {
 }
 
 function playSound(tile) {
-  if (!soundEnabled) {
-    return;
-  }
-
-  if (!ensureAudio()) {
+  if (!soundEnabled || !ensureAudio()) {
     return;
   }
 
@@ -142,6 +153,16 @@ function tileFromPoint(event) {
   return document.elementFromPoint(event.clientX, event.clientY)?.closest(".tile");
 }
 
+document.querySelectorAll("[data-open-app]").forEach((button) => {
+  button.addEventListener("click", () => {
+    showView(button.dataset.openApp);
+  });
+});
+
+backButton.addEventListener("click", () => {
+  showView("home");
+});
+
 pad.addEventListener("pointerdown", (event) => {
   event.preventDefault();
   activePointerId = event.pointerId;
@@ -185,3 +206,4 @@ soundButton.addEventListener("click", () => {
 });
 
 createTiles();
+showView("home");
