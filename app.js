@@ -1,92 +1,187 @@
-const patterns = {
-  roll: [24, 44, 24, 92],
-  bounce: [70, 60, 110, 180],
-  pulse: [140, 80, 140, 260],
-};
-
-const orb = document.querySelector("#orb");
-const playButton = document.querySelector("#playButton");
-const tapButton = document.querySelector("#tapButton");
-const tempo = document.querySelector("#tempo");
-const tempoOutput = document.querySelector("#tempoOutput");
+const pad = document.querySelector("#pad");
+const soundButton = document.querySelector("#soundButton");
+const feelSlider = document.querySelector("#feelSlider");
+const toneSlider = document.querySelector("#toneSlider");
 const statusText = document.querySelector("#statusText");
-const patternButtons = [...document.querySelectorAll(".pattern-button")];
 
-let activePattern = "roll";
-let timer = null;
+const columns = window.matchMedia("(max-width: 380px)").matches ? 5 : 6;
+const rows = window.matchMedia("(max-width: 380px)").matches ? 11 : 10;
+const tileCount = columns * rows;
+const notes = [196, 220, 247, 262, 294, 330, 370, 392, 440, 494, 523, 587];
 
-function canVibrate() {
-  return "vibrate" in navigator;
-}
+let audioContext;
+let soundEnabled = true;
+let activePointerId = null;
+let lastTile = null;
+let lastHitAt = 0;
+const AudioEngine = window.AudioContext || window.webkitAudioContext;
 
-function beatLength() {
-  return Math.round(60000 / Number(tempo.value));
-}
+function createTiles() {
+  const fragment = document.createDocumentFragment();
 
-function setTempo() {
-  tempoOutput.value = tempo.value;
-  document.documentElement.style.setProperty("--tempo", `${beatLength() * 4}ms`);
+  for (let index = 0; index < tileCount; index += 1) {
+    const tile = document.createElement("button");
+    const x = index % columns;
+    const y = Math.floor(index / columns);
+    const band = (x + y) % 7;
 
-  if (timer) {
-    stop();
-    start();
-  }
-}
+    tile.type = "button";
+    tile.className = "tile";
+    tile.dataset.index = String(index);
+    tile.dataset.x = String(x);
+    tile.dataset.y = String(y);
+    tile.dataset.band = String(band);
+    tile.setAttribute("aria-label", `Pad ${index + 1}`);
 
-function vibrateOnce() {
-  orb.classList.add("hit");
-  window.setTimeout(() => orb.classList.remove("hit"), 150);
-
-  if (canVibrate()) {
-    navigator.vibrate(patterns[activePattern]);
-    statusText.textContent = "振動を再生しています。";
-  } else {
-    statusText.textContent = "この端末は振動に非対応です。画面の動きで再生しています。";
-  }
-}
-
-function start() {
-  vibrateOnce();
-  orb.classList.add("playing");
-  playButton.textContent = "Stop";
-  timer = window.setInterval(vibrateOnce, beatLength() * 2);
-}
-
-function stop() {
-  window.clearInterval(timer);
-  timer = null;
-  orb.classList.remove("playing");
-  playButton.textContent = "Start";
-
-  if (canVibrate()) {
-    navigator.vibrate(0);
+    fragment.append(tile);
   }
 
-  statusText.textContent = "停止しました。";
+  pad.append(fragment);
 }
 
-patternButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    activePattern = button.dataset.pattern;
+function ensureAudio() {
+  if (!AudioEngine) {
+    statusText.textContent = "Audio unavailable";
+    return false;
+  }
 
-    patternButtons.forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
+  if (!audioContext) {
+    audioContext = new AudioEngine();
+  }
 
-    if (timer) {
-      vibrateOnce();
-    }
-  });
-});
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
 
-playButton.addEventListener("click", () => {
-  if (timer) {
-    stop();
+  return true;
+}
+
+function noteFor(tile) {
+  const x = Number(tile.dataset.x);
+  const y = Number(tile.dataset.y);
+  const toneOffset = Number(toneSlider.value) - 3;
+  const noteIndex = (rows - 1 - y + x + toneOffset + notes.length) % notes.length;
+
+  return notes[noteIndex];
+}
+
+function vibrate(tile) {
+  if (!("vibrate" in navigator)) {
+    statusText.textContent = "Visual mode";
     return;
   }
 
-  start();
+  const x = Number(tile.dataset.x);
+  const y = Number(tile.dataset.y);
+  const feel = Number(feelSlider.value);
+  const duration = 10 + feel * 7 + ((x + y) % 3) * 8;
+
+  navigator.vibrate(duration);
+}
+
+function playSound(tile) {
+  if (!soundEnabled) {
+    return;
+  }
+
+  if (!ensureAudio()) {
+    return;
+  }
+
+  const now = audioContext.currentTime;
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  const filter = audioContext.createBiquadFilter();
+
+  oscillator.type = "sine";
+  oscillator.frequency.setValueAtTime(noteFor(tile), now);
+
+  filter.type = "lowpass";
+  filter.frequency.setValueAtTime(1800 + Number(toneSlider.value) * 420, now);
+
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.18, now + 0.012);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+
+  oscillator.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioContext.destination);
+
+  oscillator.start(now);
+  oscillator.stop(now + 0.18);
+}
+
+function flash(tile) {
+  tile.classList.add("active");
+  window.setTimeout(() => tile.classList.remove("active"), 140);
+}
+
+function hitTile(tile) {
+  if (!tile || !tile.classList.contains("tile")) {
+    return;
+  }
+
+  const now = performance.now();
+
+  if (tile === lastTile && now - lastHitAt < 90) {
+    return;
+  }
+
+  lastTile = tile;
+  lastHitAt = now;
+
+  flash(tile);
+  vibrate(tile);
+  playSound(tile);
+
+  const index = Number(tile.dataset.index) + 1;
+  statusText.textContent = `Pad ${index}`;
+}
+
+function tileFromPoint(event) {
+  return document.elementFromPoint(event.clientX, event.clientY)?.closest(".tile");
+}
+
+pad.addEventListener("pointerdown", (event) => {
+  event.preventDefault();
+  activePointerId = event.pointerId;
+  pad.setPointerCapture(activePointerId);
+  hitTile(tileFromPoint(event));
 });
 
-tapButton.addEventListener("click", vibrateOnce);
-tempo.addEventListener("input", setTempo);
-setTempo();
+pad.addEventListener("pointermove", (event) => {
+  if (event.pointerId !== activePointerId) {
+    return;
+  }
+
+  event.preventDefault();
+  hitTile(tileFromPoint(event));
+});
+
+function finishPointer(event) {
+  if (event.pointerId !== activePointerId) {
+    return;
+  }
+
+  activePointerId = null;
+  lastTile = null;
+
+  if ("vibrate" in navigator) {
+    navigator.vibrate(0);
+  }
+}
+
+pad.addEventListener("pointerup", finishPointer);
+pad.addEventListener("pointercancel", finishPointer);
+
+soundButton.addEventListener("click", () => {
+  soundEnabled = !soundEnabled;
+  soundButton.textContent = soundEnabled ? "Sound On" : "Sound Off";
+  soundButton.setAttribute("aria-pressed", String(soundEnabled));
+
+  if (soundEnabled) {
+    ensureAudio();
+  }
+});
+
+createTiles();
