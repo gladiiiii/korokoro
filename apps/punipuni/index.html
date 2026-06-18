@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>ぷにぷに | おとあそび</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="punipuni.css" />
+  </head>
+  <body class="punipuni-page">
+    <main class="app" aria-label="ぷにぷに">
+      <section class="puni-view" aria-label="ぷにぷに">
+        <header class="topbar">
+          <a class="icon-button" href="../../" aria-label="アプリ一覧へ戻る">
+            <span aria-hidden="true">←</span>
+          </a>
+          <div>
+            <p class="eyebrow">Punipuni</p>
+            <h2>ぷにぷに</h2>
+          </div>
+          <button class="sound-button" id="soundButton" type="button" aria-pressed="true">Sound On</button>
+        </header>
+
+        <section class="puni-shell" aria-label="Puni pad">
+          <div class="puni-pad" id="puniPad"></div>
+        </section>
+
+        <footer class="controlbar">
+          <label class="control">
+            <span>Puni</span>
+            <input id="puniSlider" type="range" min="1" max="5" value="3" />
+          </label>
+          <label class="control">
+            <span>Size</span>
+            <input id="sizeSlider" type="range" min="1" max="5" value="3" />
+          </label>
+          <p class="status" id="statusText" role="status">Ready</p>
+        </footer>
+      </section>
+    </main>
+
+    <script src="punipuni.js"></script>
+  </body>
+</html>
