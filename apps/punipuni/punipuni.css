@@ -1,0 +1,118 @@
+.punipuni-page {
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(233, 84, 143, 0.2), transparent 28%),
+    linear-gradient(315deg, rgba(124, 92, 255, 0.18), transparent 38%),
+    var(--paper);
+}
+
+.puni-view {
+  min-height: 100dvh;
+  padding:
+    max(14px, env(safe-area-inset-top))
+    14px
+    max(14px, env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  touch-action: none;
+}
+
+.puni-shell {
+  min-height: 0;
+  padding: 3px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.puni-pad {
+  position: relative;
+  height: 100%;
+  min-height: 420px;
+  overflow: hidden;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.82), transparent 12%),
+    radial-gradient(circle at 76% 28%, rgba(255, 255, 255, 0.58), transparent 14%),
+    linear-gradient(145deg, #ffe3ef, #ede9ff 58%, #ddfbf4);
+}
+
+.puni {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  left: var(--x);
+  top: var(--y);
+  border: 0;
+  border-radius: 38% 62% 54% 46% / 46% 44% 56% 54%;
+  background: var(--color);
+  box-shadow:
+    inset 10px 12px 18px rgba(255, 255, 255, 0.48),
+    inset -10px -14px 20px rgba(18, 24, 38, 0.1),
+    0 14px 24px rgba(18, 24, 38, 0.12);
+  cursor: pointer;
+  transform: translate(-50%, -50%) scale(1);
+  transition:
+    border-radius 180ms ease,
+    filter 160ms ease,
+    transform 160ms cubic-bezier(.2, 1.7, .4, 1);
+}
+
+.puni::before {
+  content: "";
+  position: absolute;
+  width: 28%;
+  height: 22%;
+  left: 22%;
+  top: 18%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  transform: rotate(-18deg);
+}
+
+.puni::after {
+  content: "";
+  position: absolute;
+  inset: 16%;
+  border-radius: inherit;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+}
+
+.puni:active,
+.puni.squish {
+  filter: brightness(1.08) saturate(1.08);
+  border-radius: 58% 42% 48% 52% / 62% 58% 42% 38%;
+  transform: translate(-50%, -50%) scaleX(1.22) scaleY(0.74);
+}
+
+.puni-note {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  color: rgba(18, 24, 38, 0.46);
+  font-size: 1.1rem;
+  font-weight: 900;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: puni-note 520ms ease-out forwards;
+}
+
+@keyframes puni-note {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -120%) scale(1.4) rotate(10deg);
+  }
+}
+
+@media (max-width: 380px) {
+  .puni-view {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .sound-button {
+    min-width: 96px;
+  }
+}
