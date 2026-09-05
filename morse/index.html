@@ -1,46 +1,60 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Morse Tap</title>
-  <style>
-    *{box-sizing:border-box;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
-    html,body{margin:0;width:100%;min-height:100%;background:#111;color:#fff;font-family:system-ui,-apple-system,sans-serif;overscroll-behavior:none}
-    body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-    .wrap{width:min(92vw,420px);text-align:center}
-    #morse{font-size:2rem;min-height:3rem;margin:20px 0;word-break:break-all}
-    #tap{width:100%;height:240px;border:0;border-radius:24px;font-size:1.6rem;font-weight:700;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-    #tap.active{transform:scale(.98);opacity:.8}
-    #clear{margin-top:16px;padding:12px 20px;border:0;border-radius:12px;font-size:1rem}
-    .hint{opacity:.7;font-size:.9rem}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Morse Tap</title>
+<style>
+:root{--bg:#08131d;--panel:#0d1d2a;--line:#9fb0bf;--muted:#6d7d8b;--green:#26f05b;--text:#f4f8fb}
+*{box-sizing:border-box;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 15%,#102639,#07111a 55%,#04090e);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100vh;padding:14px 12px 28px;overscroll-behavior:none}
+.app{max-width:520px;margin:0 auto}
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 2px 12px}.title{font-size:clamp(28px,8vw,44px);font-weight:300;letter-spacing:.22em;white-space:nowrap}.mini{border:1px solid #476072;background:#102331;color:#dce7ef;border-radius:12px;padding:10px 14px;font-size:15px}
+.card{background:linear-gradient(180deg,rgba(18,39,55,.96),rgba(8,23,34,.96));border:1px solid #284150;border-radius:26px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.02),0 20px 50px rgba(0,0,0,.25)}
+.tree-wrap{padding:14px 10px 12px}.tree-title{text-align:center;font-size:13px;letter-spacing:.18em;color:#93a8b7;margin-bottom:8px}
+.tree{display:grid;grid-template-columns:repeat(8,1fr);grid-auto-rows:54px;gap:4px;align-items:center;position:relative}.node{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;color:#e9f0f5;font-size:13px}.symbol{width:28px;height:28px;border:3px solid #9eb1bf;background:#243441;box-shadow:0 0 0 1px rgba(255,255,255,.08) inset}.dot .symbol{border-radius:50%}.dash .symbol{border-radius:4px;width:34px;height:22px}.node.on .symbol{background:var(--green);border-color:#80ff9e;box-shadow:0 0 10px #21ff58,0 0 22px rgba(33,255,88,.75),0 0 35px rgba(33,255,88,.35)}.node.on{color:#fff;text-shadow:0 0 8px rgba(38,240,91,.5)}
+.legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:10px 0 2px;color:#bdcbd5;font-size:12px}.legend span{display:flex;align-items:center;gap:7px}.lg-dot,.lg-dash{display:inline-block;border:2px solid #9eb1bf;background:#263743}.lg-dot{width:16px;height:16px;border-radius:50%}.lg-dash{width:24px;height:14px;border-radius:3px}.active-demo{background:var(--green);border-color:#80ff9e;box-shadow:0 0 10px #21ff58}
+.controls{margin-top:14px;padding:14px}.status{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.readout{background:#07131c;border:1px solid #2a4555;border-radius:18px;padding:12px;text-align:center;min-height:88px}.label{font-size:12px;color:#8da2b2;margin-bottom:8px}.morse{font-size:34px;letter-spacing:.12em;word-break:break-all;line-height:1.1}.decoded{font-size:38px;font-weight:700;line-height:1.1}
+#tap{width:100%;height:190px;border:0;border-radius:999px;background:radial-gradient(circle at 50% 35%,#2ecb57,#14953a 62%,#0d6629);color:white;font-size:24px;font-weight:800;touch-action:none;box-shadow:0 0 0 4px #5bf07e inset,0 0 20px rgba(38,240,91,.42),0 18px 35px rgba(0,0,0,.28);transition:transform .08s,filter .08s}.tap-sub{display:block;font-size:13px;font-weight:500;opacity:.85;margin-top:6px}#tap.active{transform:scale(.965);filter:brightness(1.35);box-shadow:0 0 0 5px #8affaa inset,0 0 25px #21ff58,0 0 55px rgba(33,255,88,.55)}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.btn{border:1px solid #334d5c;background:#102230;color:#dce7ef;border-radius:14px;padding:13px 10px;font-size:14px}.hint{text-align:center;color:#8396a4;font-size:12px;margin-top:10px;line-height:1.6}
+@media(max-width:380px){.tree{grid-auto-rows:48px}.symbol{transform:scale(.9)}.title{letter-spacing:.14em}.morse{font-size:28px}}
+</style>
 </head>
 <body>
-  <main class="wrap">
-    <h1>Morse Tap</h1>
-    <div id="morse">（ここに表示）</div>
-    <button id="tap" type="button">押して入力</button>
-    <button id="clear" type="button">クリア</button>
-    <p class="hint">短く押す＝・　長く押す＝－</p>
-  </main>
-  <script>
-    const tap=document.getElementById('tap');
-    const morse=document.getElementById('morse');
-    const clear=document.getElementById('clear');
-    let startTime=null,value='',pressing=false;
-    function startPress(e){if(e.cancelable)e.preventDefault();if(pressing)return;pressing=true;startTime=Date.now();tap.classList.add('active');tap.textContent='押しています…'}
-    function endPress(e){if(e.cancelable)e.preventDefault();if(!pressing||startTime===null)return;const duration=Date.now()-startTime;value+=duration<350?'・':'－';morse.textContent=value;pressing=false;startTime=null;tap.classList.remove('active');tap.textContent='押して入力'}
-    tap.addEventListener('touchstart',startPress,{passive:false});
-    tap.addEventListener('touchend',endPress,{passive:false});
-    tap.addEventListener('touchcancel',endPress,{passive:false});
-    tap.addEventListener('mousedown',startPress);
-    tap.addEventListener('mouseup',endPress);
-    tap.addEventListener('mouseleave',e=>{if(pressing)endPress(e)});
-    tap.addEventListener('contextmenu',e=>e.preventDefault());
-    tap.addEventListener('selectstart',e=>e.preventDefault());
-    tap.addEventListener('dragstart',e=>e.preventDefault());
-    clear.addEventListener('click',()=>{value='';morse.textContent='（ここに表示）'});
-  </script>
+<main class="app">
+  <div class="header"><div class="title">MORSE CODE</div><button id="clearTop" class="mini">クリア</button></div>
+  <section class="card tree-wrap">
+    <div class="tree-title">入力に合わせて対応する経路が光ります</div>
+    <div id="tree" class="tree"></div>
+    <div class="legend"><span><i class="lg-dot active-demo"></i>点（・）</span><span><i class="lg-dash active-demo"></i>線（－）</span><span><i class="lg-dot"></i>未使用</span></div>
+  </section>
+  <section class="card controls">
+    <div class="status">
+      <div class="readout"><div class="label">モールス</div><div id="morse" class="morse">—</div></div>
+      <div class="readout"><div class="label">解読結果</div><div id="decoded" class="decoded">?</div></div>
+    </div>
+    <button id="tap" type="button">タップで入力<span class="tap-sub">短押し：・ ／ 長押し：－</span></button>
+    <div class="bottom"><button id="space" class="btn">↔ 文字を確定</button><button id="clear" class="btn">⌫ クリア</button></div>
+    <div class="hint">短く押すと「・」、350ms以上押すと「－」。<br>「文字を確定」で次の文字へ進みます。</div>
+  </section>
+</main>
+<script>
+const MORSE={'.-':'A','-...':'B','-.-.':'C','-..':'D','.':'E','..-.':'F','--.':'G','....':'H','..':'I','.---':'J','-.-':'K','.-..':'L','--':'M','-.':'N','---':'O','.--.':'P','--.-':'Q','.-.':'R','...':'S','-':'T','..-':'U','...-':'V','.--':'W','-..-':'X','-.--':'Y','--..':'Z'};
+const tree=document.getElementById('tree');
+const paths=['.','-','..','.-','-.','--','...','..-','.-.','.--','-..','-.-','--.','---','....','...-','..-.','..-','.-..','.--.','-...','-.-.','-.--','--..','--.-','.---'];
+const unique=[...new Set(paths)].filter(p=>MORSE[p]);
+unique.sort((a,b)=>a.length-b.length||a.localeCompare(b));
+unique.forEach((p,i)=>{const d=document.createElement('div');d.className='node '+(p.endsWith('.')?'dot':'dash');d.dataset.path=p;d.style.gridColumn=((i%8)+1);d.innerHTML='<div class="symbol"></div><div>'+MORSE[p]+'</div>';tree.appendChild(d)});
+const tap=document.getElementById('tap'),morseEl=document.getElementById('morse'),decoded=document.getElementById('decoded');
+let start=null,pressing=false,current='',text='';
+function render(){morseEl.textContent=current?current.replaceAll('.', '・').replaceAll('-','－'):'—';decoded.textContent=current?(MORSE[current]||'…'):(text.slice(-1)||'?');document.querySelectorAll('.node').forEach(n=>{n.classList.toggle('on',current.startsWith(n.dataset.path))})}
+function down(e){if(e.cancelable)e.preventDefault();if(pressing)return;pressing=true;start=Date.now();tap.classList.add('active')}
+function up(e){if(e.cancelable)e.preventDefault();if(!pressing)return;const ms=Date.now()-start;current+=ms<350?'.':'-';pressing=false;start=null;tap.classList.remove('active');render()}
+function clearAll(){current='';text='';render()}
+function commit(){if(current&&MORSE[current]){text+=MORSE[current];current='';render()}}
+tap.addEventListener('touchstart',down,{passive:false});tap.addEventListener('touchend',up,{passive:false});tap.addEventListener('touchcancel',up,{passive:false});tap.addEventListener('mousedown',down);tap.addEventListener('mouseup',up);tap.addEventListener('mouseleave',e=>{if(pressing)up(e)});tap.addEventListener('contextmenu',e=>e.preventDefault());tap.addEventListener('selectstart',e=>e.preventDefault());
+document.getElementById('space').addEventListener('click',commit);document.getElementById('clear').addEventListener('click',clearAll);document.getElementById('clearTop').addEventListener('click',clearAll);render();
+</script>
 </body>
 </html>
