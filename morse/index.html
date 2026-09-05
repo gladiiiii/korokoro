@@ -21,6 +21,9 @@ button,input{font:inherit}
 .title{font-size:clamp(19px,6.5vw,34px);font-weight:300;letter-spacing:.14em;white-space:nowrap}
 .header-actions{display:flex;gap:5px;flex-shrink:0}.mini,.btn{border:1px solid #334d5c;background:#102230;color:#dce7ef;border-radius:11px;padding:9px 10px;font-size:12px;touch-action:manipulation}
 .card{background:linear-gradient(180deg,rgba(18,39,55,.96),rgba(8,23,34,.96));border:1px solid var(--border);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:3px;background:#07131c;border:1px solid #284150;border-radius:13px}
+.mode-tab{border:0;background:transparent;color:#8298a7;border-radius:9px;padding:8px 10px;font-size:12px;font-weight:800;letter-spacing:.04em;touch-action:manipulation;transition:background .15s,color .15s,box-shadow .15s}
+.mode-tab.active{background:#173126;color:#79ff9a;box-shadow:inset 0 0 0 1px #2a6b42,0 0 12px rgba(37,240,90,.10)}
 .tree-wrap{padding:6px 6px 7px;overflow:hidden}
 .tree-title{text-align:center;font-size:10px;color:#93a8b7;margin:0 0 3px;line-height:1.3}
 .tree-stage{height:clamp(205px,36svh,335px);width:100%}
@@ -47,10 +50,10 @@ button,input{font:inherit}
 .preview{background:#06121b;border:1px solid #284554;border-radius:15px;padding:10px 12px;margin-bottom:11px;text-align:center}.preview-top{display:flex;align-items:center;justify-content:center;gap:7px;color:#a7bac7;font-size:11px}.preview-led{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 9px var(--green)}.preview-code{font:800 25px/1.25 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;margin-top:5px}.preview-current{height:20px;margin-top:2px;color:var(--green);font-size:13px;font-weight:800}.setting-row{background:#0a1924;border:1px solid #294451;border-radius:15px;padding:11px;margin-top:9px}.setting-name{font-size:14px;font-weight:800}.setting-help{font-size:10px;color:#8499a8;margin-top:3px;line-height:1.45}.setting-control{display:grid;grid-template-columns:1fr 94px;gap:10px;align-items:center;margin-top:10px}.setting-control input[type="range"]{width:100%;accent-color:var(--green)}.number-wrap{display:flex;align-items:center;gap:4px}.number-wrap input{width:67px;background:#06121b;color:#fff;border:1px solid #3a596a;border-radius:9px;padding:8px 6px;text-align:right;font-weight:750;outline:none}.number-wrap input:focus{border-color:var(--green)}.unit{font-size:11px;color:#9aafbc}.scale-labels{display:flex;justify-content:space-between;color:#6f8796;font-size:9px;margin-top:1px}.setting-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px}.settings-note{font-size:9px;color:#718794;line-height:1.45;margin:8px 2px 0;text-align:center}
 
 @media(max-width:380px){
-  body{padding-left:6px;padding-right:6px}.app{gap:6px}.title{font-size:18px;letter-spacing:.08em}.header-actions{gap:3px}.header-actions .mini{padding:7px 7px;font-size:11px}.tree-stage{height:clamp(185px,33svh,260px)}.tree-title{font-size:9px}.node-letter{font-size:20px}.work{padding:6px;gap:5px}#editor{height:70px;padding:8px 9px}.readout{min-height:48px;padding:5px}.label{font-size:8px}#tap{height:100px;border-radius:18px}.bottom{gap:5px}.btn{padding:8px 5px}.hint{font-size:9px}.settings-backdrop{padding-left:5px;padding-right:5px}.settings-sheet{padding:10px;max-height:88svh}.setting-control{grid-template-columns:1fr 86px;gap:7px}.number-wrap input{width:60px}.preview-code{font-size:22px}
+  body{padding-left:6px;padding-right:6px}.app{gap:6px}.title{font-size:18px;letter-spacing:.08em}.header-actions{gap:3px}.header-actions .mini{padding:7px 7px;font-size:11px}.mode-tab{padding:7px 8px;font-size:11px}.tree-stage{height:clamp(185px,33svh,260px)}.tree-title{font-size:9px}.node-letter{font-size:20px}.work{padding:6px;gap:5px}#editor{height:70px;padding:8px 9px}.readout{min-height:48px;padding:5px}.label{font-size:8px}#tap{height:100px;border-radius:18px}.bottom{gap:5px}.btn{padding:8px 5px}.hint{font-size:9px}.settings-backdrop{padding-left:5px;padding-right:5px}.settings-sheet{padding:10px;max-height:88svh}.setting-control{grid-template-columns:1fr 86px;gap:7px}.number-wrap input{width:60px}.preview-code{font-size:22px}
 }
 @media(max-height:680px){
-  body{padding-top:5px;padding-bottom:5px}.header{min-height:30px}.title{font-size:18px}.tree-stage{height:190px}#editor{height:62px;font-size:18px}.readout{min-height:45px}#tap{height:88px}.tap-sub{margin-top:1px}.hint{display:none}.settings-sheet{max-height:91svh}.preview{padding:7px 10px}.setting-row{padding:9px}.setting-help{line-height:1.3}
+  body{padding-top:5px;padding-bottom:5px}.header{min-height:30px}.title{font-size:18px}.mode-tab{padding:6px 8px}.tree-stage{height:190px}#editor{height:62px;font-size:18px}.readout{min-height:45px}#tap{height:88px}.tap-sub{margin-top:1px}.hint{display:none}.settings-sheet{max-height:91svh}.preview{padding:7px 10px}.setting-row{padding:9px}.setting-help{line-height:1.3}
 }
 </style>
 </head>
@@ -63,6 +66,11 @@ button,input{font:inherit}
       <button id="openSettings" class="mini" type="button">⚙️ 設定</button>
       <button id="clearAll" class="mini" type="button">全消去</button>
     </div>
+  </div>
+
+  <div class="mode-tabs" role="tablist" aria-label="モールス入力モード">
+    <button id="lettersTab" class="mode-tab" type="button" role="tab" aria-selected="true">英字 A-Z</button>
+    <button id="numbersTab" class="mode-tab" type="button" role="tab" aria-selected="false">数字 0-9</button>
   </div>
 
   <section class="card tree-wrap">
@@ -91,7 +99,7 @@ button,input{font:inherit}
       <button id="commitNow" class="btn" type="button">今すぐ確定</button>
       <button id="clearCurrent" class="btn" type="button">入力中を取消</button>
     </div>
-    <p class="hint">押している間は音が鳴ります。存在しない組み合わせは「?」として登録します。</p>
+    <p id="hint" class="hint">押している間は音が鳴ります。存在しない組み合わせは「?」として登録します。</p>
   </section>
 </main>
 
@@ -137,50 +145,78 @@ button,input{font:inherit}
 </div>
 
 <script>
-const MORSE={
+const LETTER_MORSE={
   '.':'E','-':'T','..':'I','.-':'A','-.':'N','--':'M',
   '...':'S','..-':'U','.-.':'R','.--':'W','-..':'D','-.-':'K','--.':'G','---':'O',
   '....':'H','...-':'V','..-.':'F','.-..':'L','.--.':'P','.---':'J',
   '-...':'B','-..-':'X','-.-.':'C','-.--':'Y','--..':'Z','--.-':'Q'
 };
+const NUMBER_MORSE={
+  '.----':'1','..---':'2','...--':'3','....-':'4','.....':'5',
+  '-....':'6','--...':'7','---..':'8','----.':'9','-----':'0'
+};
+
+const MODES={
+  letters:{map:LETTER_MORSE,step:78,leftStep:84,edgeScale:{'-.':3,'-..':2,'.-':3,'.--':2,'..-':2}},
+  numbers:{map:NUMBER_MORSE,step:58,leftStep:58,edgeScale:{}}
+};
+const MODE_KEY='morse_mode';
 
 const svg=document.getElementById('treeSvg');
 const NS='http://www.w3.org/2000/svg';
-const STEP=78;
-const LEFT_STEP=84;
 const ROOT={x:400,y:68};
 const DIRS=[[1,0],[0,1],[-1,0],[0,-1]];
-// T→N +2 / N→D +1 / E→A +2 / A→W +1 / I→U +1
-const EDGE_SCALE={'-.':3,'-..':2,'.-':3,'.--':2,'..-':2};
-const nodes={'':{path:'',x:ROOT.x,y:ROOT.y,dir:null}};
-const paths=Object.keys(MORSE).sort((a,b)=>a.length-b.length||a.localeCompare(b));
+const lettersTab=document.getElementById('lettersTab');
+const numbersTab=document.getElementById('numbersTab');
+const hint=document.getElementById('hint');
+let activeMode=loadMode();
+let nodes={};
+let paths=[];
 
-for(const path of paths){
-  const parentPath=path.slice(0,-1),parent=nodes[parentPath],symbol=path.at(-1);
-  let dir;
-  if(path.length===1) dir=symbol==='.'?0:2;
-  else{
-    const prev=path.at(-2);dir=parent.dir;
-    if(symbol!==prev){
-      if(prev==='.'&&symbol==='-') dir=(dir+1)%4;
-      if(prev==='-'&&symbol==='.') dir=(dir+3)%4;
-    }
-  }
-  const scale=EDGE_SCALE[path]||1;
-  const moveStep=dir===2?LEFT_STEP:STEP;
-  nodes[path]={path,parentPath,symbol,dir,x:parent.x+DIRS[dir][0]*moveStep*scale,y:parent.y+DIRS[dir][1]*moveStep*scale};
+function loadMode(){
+  try{return localStorage.getItem(MODE_KEY)==='numbers'?'numbers':'letters'}catch(_){return'letters'}
 }
-
-const positions=paths.map(p=>nodes[p]);
-const minX=Math.min(ROOT.x,...positions.map(n=>n.x))-52;
-const maxX=Math.max(ROOT.x,...positions.map(n=>n.x))+52;
-const maxY=Math.max(ROOT.y,...positions.map(n=>n.y))+46;
-svg.setAttribute('viewBox',`${minX} 6 ${maxX-minX} ${maxY-6}`);
-svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+function saveMode(){try{localStorage.setItem(MODE_KEY,activeMode)}catch(_){}}
+function getMap(){return MODES[activeMode].map}
+function getAllPaths(map){
+  const all=new Set();
+  for(const code of Object.keys(map))for(let i=1;i<=code.length;i++)all.add(code.slice(0,i));
+  return [...all].sort((a,b)=>a.length-b.length||a.localeCompare(b));
+}
+function hasValidPrefix(value){return Object.keys(getMap()).some(code=>code.startsWith(value))}
 
 function el(tag,attrs={}){const n=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);return n}
 function labelPosition(node){const side=node.x<ROOT.x?-1:1;return{x:node.x+side*30,y:node.y,anchor:side<0?'end':'start'}}
 function buildTree(){
+  const config=MODES[activeMode];
+  const map=config.map;
+  nodes={'':{path:'',x:ROOT.x,y:ROOT.y,dir:null}};
+  paths=getAllPaths(map);
+
+  for(const path of paths){
+    const parentPath=path.slice(0,-1),parent=nodes[parentPath],symbol=path.at(-1);
+    let dir;
+    if(path.length===1) dir=symbol==='.'?0:2;
+    else{
+      const prev=path.at(-2);dir=parent.dir;
+      if(symbol!==prev){
+        if(prev==='.'&&symbol==='-') dir=(dir+1)%4;
+        if(prev==='-'&&symbol==='.') dir=(dir+3)%4;
+      }
+    }
+    const scale=config.edgeScale[path]||1;
+    const moveStep=dir===2?config.leftStep:config.step;
+    nodes[path]={path,parentPath,symbol,dir,x:parent.x+DIRS[dir][0]*moveStep*scale,y:parent.y+DIRS[dir][1]*moveStep*scale};
+  }
+
+  const positions=paths.map(p=>nodes[p]);
+  const minX=Math.min(ROOT.x,...positions.map(n=>n.x))-52;
+  const maxX=Math.max(ROOT.x,...positions.map(n=>n.x))+52;
+  const maxY=Math.max(ROOT.y,...positions.map(n=>n.y))+46;
+  svg.setAttribute('viewBox',`${minX} 6 ${maxX-minX} ${maxY-6}`);
+  svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+  svg.setAttribute('aria-label',activeMode==='numbers'?'数字モールス樹形図':'英字モールス樹形図');
+
   svg.innerHTML='';
   svg.appendChild(el('line',{x1:ROOT.x,y1:26,x2:ROOT.x,y2:ROOT.y-10,class:'wire'}));
   svg.appendChild(el('circle',{cx:ROOT.x,cy:ROOT.y,r:9,class:'root-dot'}));
@@ -196,10 +232,12 @@ function buildTree(){
       shape=el('rect',{x:n.x-dashW/2,y:n.y-13,width:dashW,height:26,rx:3,class:'node-shape','data-path':path});
     }
     svg.appendChild(shape);
-    const lp=labelPosition(n),t=el('text',{x:lp.x,y:lp.y,class:'node-letter','text-anchor':lp.anchor});t.textContent=MORSE[path];svg.appendChild(t);
+    const value=map[path];
+    if(value){
+      const lp=labelPosition(n),t=el('text',{x:lp.x,y:lp.y,class:'node-letter','text-anchor':lp.anchor});t.textContent=value;svg.appendChild(t);
+    }
   }
 }
-buildTree();
 
 const DEFAULT_DASH_MS=180;
 const DEFAULT_GAP_MS=850;
@@ -229,11 +267,28 @@ let pressStart=0,pressing=false,current='',commitTimer=null,raf=null,gapStart=0;
 let soundOn=true,audioCtx=null,osc=null,gain=null;
 
 function updateTapHelp(){tapSub.textContent=`短押し＝・　${DASH_MS}ms以上＝－　離して約${(GAP_MS/1000).toFixed(GAP_MS%1000===0?0:2)}秒で文字確定`}
+function updateModeUI(){
+  const numbers=activeMode==='numbers';
+  lettersTab.classList.toggle('active',!numbers);numbersTab.classList.toggle('active',numbers);
+  lettersTab.setAttribute('aria-selected',String(!numbers));numbersTab.setAttribute('aria-selected',String(numbers));
+  hint.textContent=numbers?'数字は5打で完成します。途中の有効な経路は「…」、存在しない組み合わせは「?」です。':'押している間は音が鳴ります。存在しない組み合わせは「?」として登録します。';
+}
+function candidateText(){
+  if(!current)return'—';
+  const match=getMap()[current];
+  if(match)return match;
+  if(activeMode==='numbers'&&hasValidPrefix(current))return'…';
+  return'?';
+}
 function render(){
   morseEl.textContent=current?current.replaceAll('.','・').replaceAll('-','－'):'—';
-  decoded.textContent=current?(MORSE[current]||'?'):'—';
+  decoded.textContent=candidateText();
   svg.querySelectorAll('[data-path]').forEach(n=>n.classList.toggle('on',!!current&&current.startsWith(n.dataset.path)));
-  updateTapHelp();
+  updateTapHelp();updateModeUI();
+}
+function setMode(mode){
+  if(mode===activeMode)return;
+  clearCurrent();activeMode=mode;saveMode();buildTree();render();
 }
 function scrollEditor(){editor.scrollTop=editor.scrollHeight;editor.setSelectionRange(editor.value.length,editor.value.length)}
 function appendText(s){editor.value+=s;scrollEditor()}
@@ -251,7 +306,7 @@ function scheduleCommit(){
 function commitCurrent(){
   clearTimeout(commitTimer);commitTimer=null;stopGapAnimation();
   if(!current)return;
-  appendText(MORSE[current]||'?');
+  appendText(getMap()[current]||'?');
   current='';render();
 }
 function clearCurrent(){clearTimeout(commitTimer);commitTimer=null;stopGapAnimation();current='';render()}
@@ -290,6 +345,8 @@ tap.addEventListener('pointerup',up);
 tap.addEventListener('pointercancel',up);
 tap.addEventListener('contextmenu',e=>e.preventDefault());
 tap.addEventListener('selectstart',e=>e.preventDefault());
+lettersTab.addEventListener('click',()=>setMode('letters'));
+numbersTab.addEventListener('click',()=>setMode('numbers'));
 
 document.getElementById('commitNow').onclick=commitCurrent;
 document.getElementById('clearCurrent').onclick=clearCurrent;
@@ -392,7 +449,7 @@ document.getElementById('resetSettings').onclick=()=>{DASH_MS=DEFAULT_DASH_MS;GA
 settingsBackdrop.addEventListener('pointerdown',e=>{if(e.target===settingsBackdrop)closeSettings()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&settingsOpen)closeSettings()});
 
-syncSettingsUI();render();
+buildTree();syncSettingsUI();render();
 </script>
 </body>
 </html>
