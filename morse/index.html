@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Morse Tap</title>
+  <style>
+    *{box-sizing:border-box;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+    html,body{margin:0;width:100%;min-height:100%;background:#111;color:#fff;font-family:system-ui,-apple-system,sans-serif;overscroll-behavior:none}
+    body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .wrap{width:min(92vw,420px);text-align:center}
+    #morse{font-size:2rem;min-height:3rem;margin:20px 0;word-break:break-all}
+    #tap{width:100%;height:240px;border:0;border-radius:24px;font-size:1.6rem;font-weight:700;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+    #tap.active{transform:scale(.98);opacity:.8}
+    #clear{margin-top:16px;padding:12px 20px;border:0;border-radius:12px;font-size:1rem}
+    .hint{opacity:.7;font-size:.9rem}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Morse Tap</h1>
+    <div id="morse">（ここに表示）</div>
+    <button id="tap" type="button">押して入力</button>
+    <button id="clear" type="button">クリア</button>
+    <p class="hint">短く押す＝・　長く押す＝－</p>
+  </main>
+  <script>
+    const tap=document.getElementById('tap');
+    const morse=document.getElementById('morse');
+    const clear=document.getElementById('clear');
+    let startTime=null,value='',pressing=false;
+    function startPress(e){if(e.cancelable)e.preventDefault();if(pressing)return;pressing=true;startTime=Date.now();tap.classList.add('active');tap.textContent='押しています…'}
+    function endPress(e){if(e.cancelable)e.preventDefault();if(!pressing||startTime===null)return;const duration=Date.now()-startTime;value+=duration<350?'・':'－';morse.textContent=value;pressing=false;startTime=null;tap.classList.remove('active');tap.textContent='押して入力'}
+    tap.addEventListener('touchstart',startPress,{passive:false});
+    tap.addEventListener('touchend',endPress,{passive:false});
+    tap.addEventListener('touchcancel',endPress,{passive:false});
+    tap.addEventListener('mousedown',startPress);
+    tap.addEventListener('mouseup',endPress);
+    tap.addEventListener('mouseleave',e=>{if(pressing)endPress(e)});
+    tap.addEventListener('contextmenu',e=>e.preventDefault());
+    tap.addEventListener('selectstart',e=>e.preventDefault());
+    tap.addEventListener('dragstart',e=>e.preventDefault());
+    clear.addEventListener('click',()=>{value='';morse.textContent='（ここに表示）'});
+  </script>
+</body>
+</html>
