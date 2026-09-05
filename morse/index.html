@@ -95,6 +95,7 @@ const MORSE={
 const svg=document.getElementById('treeSvg');
 const NS='http://www.w3.org/2000/svg';
 const STEP=78;
+const LEFT_STEP=84;
 const ROOT={x:400,y:68};
 const DIRS=[[1,0],[0,1],[-1,0],[0,-1]];
 // T→N +2 / N→D +1 / E→A +2 / A→W +1 / I→U +1
@@ -114,7 +115,8 @@ for(const path of paths){
     }
   }
   const scale=EDGE_SCALE[path]||1;
-  nodes[path]={path,parentPath,symbol,dir,x:parent.x+DIRS[dir][0]*STEP*scale,y:parent.y+DIRS[dir][1]*STEP*scale};
+  const moveStep=dir===2?LEFT_STEP:STEP;
+  nodes[path]={path,parentPath,symbol,dir,x:parent.x+DIRS[dir][0]*moveStep*scale,y:parent.y+DIRS[dir][1]*moveStep*scale};
 }
 
 const positions=paths.map(p=>nodes[p]);
@@ -134,7 +136,13 @@ function buildTree(){
   for(const path of paths){const n=nodes[path],p=nodes[n.parentPath];svg.appendChild(el('line',{x1:p.x,y1:p.y,x2:n.x,y2:n.y,class:'wire','data-path':path}))}
   for(const path of paths){
     const n=nodes[path];
-    const shape=n.symbol==='.'?el('circle',{cx:n.x,cy:n.y,r:16,class:'node-shape','data-path':path}):el('rect',{x:n.x-22,y:n.y-13,width:44,height:26,rx:3,class:'node-shape','data-path':path});
+    let shape;
+    if(n.symbol==='.'){
+      shape=el('circle',{cx:n.x,cy:n.y,r:16,class:'node-shape','data-path':path});
+    }else{
+      const dashW=n.x<ROOT.x?38:44;
+      shape=el('rect',{x:n.x-dashW/2,y:n.y-13,width:dashW,height:26,rx:3,class:'node-shape','data-path':path});
+    }
     svg.appendChild(shape);
     const lp=labelPosition(n),t=el('text',{x:lp.x,y:lp.y,class:'node-letter','text-anchor':lp.anchor});t.textContent=MORSE[path];svg.appendChild(t);
   }
