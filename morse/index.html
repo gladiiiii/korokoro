@@ -13,11 +13,13 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 8%,#102639,#07111a 55%,#04090e);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 body{min-height:100svh;padding:max(8px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom));overscroll-behavior:none}
+body.settings-open{overflow:hidden}
 button,.tree-wrap{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+button,input{font:inherit}
 .app{width:min(100%,560px);margin:auto;display:grid;gap:8px}
-.header{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:38px}
-.title{font-size:clamp(20px,7vw,34px);font-weight:300;letter-spacing:.16em;white-space:nowrap}
-.header-actions{display:flex;gap:6px}.mini,.btn{border:1px solid #334d5c;background:#102230;color:#dce7ef;border-radius:11px;padding:9px 11px;font-size:12px;touch-action:manipulation}
+.header{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:38px}
+.title{font-size:clamp(19px,6.5vw,34px);font-weight:300;letter-spacing:.14em;white-space:nowrap}
+.header-actions{display:flex;gap:5px;flex-shrink:0}.mini,.btn{border:1px solid #334d5c;background:#102230;color:#dce7ef;border-radius:11px;padding:9px 10px;font-size:12px;touch-action:manipulation}
 .card{background:linear-gradient(180deg,rgba(18,39,55,.96),rgba(8,23,34,.96));border:1px solid var(--border);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
 .tree-wrap{padding:6px 6px 7px;overflow:hidden}
 .tree-title{text-align:center;font-size:10px;color:#93a8b7;margin:0 0 3px;line-height:1.3}
@@ -36,11 +38,19 @@ button,.tree-wrap{-webkit-user-select:none;user-select:none;-webkit-touch-callou
 #tap{width:100%;height:clamp(105px,18svh,160px);border:0;border-radius:22px;background:radial-gradient(circle at 50% 30%,#31d85d,#15953b 64%,#0d6629);color:#fff;font-size:clamp(20px,6vw,26px);font-weight:850;touch-action:none;box-shadow:0 0 0 3px #5bf07e inset,0 0 18px rgba(38,240,91,.34),0 10px 24px rgba(0,0,0,.24);transition:transform .06s,filter .06s}
 .tap-sub{display:block;font-size:11px;font-weight:600;opacity:.82;margin-top:3px}#tap.active{transform:scale(.985);filter:brightness(1.28);box-shadow:0 0 0 4px #8affaa inset,0 0 24px #21ff58,0 0 45px rgba(33,255,88,.45)}
 .bottom{display:grid;grid-template-columns:1fr 1fr;gap:7px}.btn{padding:9px 7px;font-size:12px}.hint{text-align:center;color:var(--muted);font-size:10px;line-height:1.35;margin:0}
+
+/* Settings bottom sheet */
+.settings-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.62);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:12px 10px max(10px,env(safe-area-inset-bottom))}
+.settings-backdrop.open{display:flex}
+.settings-sheet{width:min(100%,560px);max-height:min(84svh,720px);overflow:auto;background:linear-gradient(180deg,#102534,#091723);border:1px solid #355263;border-radius:22px 22px 16px 16px;box-shadow:0 -14px 50px rgba(0,0,0,.45);padding:13px}
+.settings-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.settings-title{font-size:19px;font-weight:800;letter-spacing:.04em}.close-settings{width:38px;height:38px;padding:0;border-radius:11px;font-size:20px}
+.preview{background:#06121b;border:1px solid #284554;border-radius:15px;padding:10px 12px;margin-bottom:11px;text-align:center}.preview-top{display:flex;align-items:center;justify-content:center;gap:7px;color:#a7bac7;font-size:11px}.preview-led{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 9px var(--green)}.preview-code{font:800 25px/1.25 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;margin-top:5px}.preview-current{height:20px;margin-top:2px;color:var(--green);font-size:13px;font-weight:800}.setting-row{background:#0a1924;border:1px solid #294451;border-radius:15px;padding:11px;margin-top:9px}.setting-name{font-size:14px;font-weight:800}.setting-help{font-size:10px;color:#8499a8;margin-top:3px;line-height:1.45}.setting-control{display:grid;grid-template-columns:1fr 94px;gap:10px;align-items:center;margin-top:10px}.setting-control input[type="range"]{width:100%;accent-color:var(--green)}.number-wrap{display:flex;align-items:center;gap:4px}.number-wrap input{width:67px;background:#06121b;color:#fff;border:1px solid #3a596a;border-radius:9px;padding:8px 6px;text-align:right;font-weight:750;outline:none}.number-wrap input:focus{border-color:var(--green)}.unit{font-size:11px;color:#9aafbc}.scale-labels{display:flex;justify-content:space-between;color:#6f8796;font-size:9px;margin-top:1px}.setting-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px}.settings-note{font-size:9px;color:#718794;line-height:1.45;margin:8px 2px 0;text-align:center}
+
 @media(max-width:380px){
-  body{padding-left:6px;padding-right:6px}.app{gap:6px}.title{font-size:20px;letter-spacing:.1em}.mini{padding:7px 8px}.tree-stage{height:clamp(185px,33svh,260px)}.tree-title{font-size:9px}.node-letter{font-size:20px}.work{padding:6px;gap:5px}#editor{height:70px;padding:8px 9px}.readout{min-height:48px;padding:5px}.label{font-size:8px}#tap{height:100px;border-radius:18px}.bottom{gap:5px}.btn{padding:8px 5px}.hint{font-size:9px}
+  body{padding-left:6px;padding-right:6px}.app{gap:6px}.title{font-size:18px;letter-spacing:.08em}.header-actions{gap:3px}.header-actions .mini{padding:7px 7px;font-size:11px}.tree-stage{height:clamp(185px,33svh,260px)}.tree-title{font-size:9px}.node-letter{font-size:20px}.work{padding:6px;gap:5px}#editor{height:70px;padding:8px 9px}.readout{min-height:48px;padding:5px}.label{font-size:8px}#tap{height:100px;border-radius:18px}.bottom{gap:5px}.btn{padding:8px 5px}.hint{font-size:9px}.settings-backdrop{padding-left:5px;padding-right:5px}.settings-sheet{padding:10px;max-height:88svh}.setting-control{grid-template-columns:1fr 86px;gap:7px}.number-wrap input{width:60px}.preview-code{font-size:22px}
 }
 @media(max-height:680px){
-  body{padding-top:5px;padding-bottom:5px}.header{min-height:30px}.title{font-size:19px}.tree-stage{height:190px}#editor{height:62px;font-size:18px}.readout{min-height:45px}#tap{height:88px}.tap-sub{margin-top:1px}.hint{display:none}
+  body{padding-top:5px;padding-bottom:5px}.header{min-height:30px}.title{font-size:18px}.tree-stage{height:190px}#editor{height:62px;font-size:18px}.readout{min-height:45px}#tap{height:88px}.tap-sub{margin-top:1px}.hint{display:none}.settings-sheet{max-height:91svh}.preview{padding:7px 10px}.setting-row{padding:9px}.setting-help{line-height:1.3}
 }
 </style>
 </head>
@@ -50,6 +60,7 @@ button,.tree-wrap{-webkit-user-select:none;user-select:none;-webkit-touch-callou
     <div class="title">MORSE CODE</div>
     <div class="header-actions">
       <button id="soundToggle" class="mini" type="button">🔊 音ON</button>
+      <button id="openSettings" class="mini" type="button">⚙️ 設定</button>
       <button id="clearAll" class="mini" type="button">全消去</button>
     </div>
   </div>
@@ -75,7 +86,7 @@ button,.tree-wrap{-webkit-user-select:none;user-select:none;-webkit-touch-callou
     </div>
     <div class="waitbar" aria-hidden="true"><div id="waitfill" class="waitfill"></div></div>
 
-    <button id="tap" type="button">押して送信<span class="tap-sub">短押し＝・　長押し＝－　離して約0.85秒で文字確定</span></button>
+    <button id="tap" type="button">押して送信<span id="tapSub" class="tap-sub"></span></button>
     <div class="bottom">
       <button id="commitNow" class="btn" type="button">今すぐ確定</button>
       <button id="clearCurrent" class="btn" type="button">入力中を取消</button>
@@ -83,6 +94,47 @@ button,.tree-wrap{-webkit-user-select:none;user-select:none;-webkit-touch-callou
     <p class="hint">押している間は音が鳴ります。存在しない組み合わせは「?」として登録します。</p>
   </section>
 </main>
+
+<div id="settingsBackdrop" class="settings-backdrop" aria-hidden="true">
+  <section class="settings-sheet" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="settings-head">
+      <div id="settingsTitle" class="settings-title">⚙️ MORSE SETTINGS</div>
+      <button id="closeSettings" class="mini close-settings" type="button" aria-label="設定を閉じる">×</button>
+    </div>
+
+    <div class="preview">
+      <div class="preview-top"><span class="preview-led"></span><span>サンプル再生中 — SOS</span></div>
+      <div class="preview-code">・・・　－－－　・・・</div>
+      <div id="previewCurrent" class="preview-current">設定を耳で確認できます</div>
+    </div>
+
+    <div class="setting-row">
+      <div class="setting-name">トン / ツーの境界</div>
+      <div class="setting-help">この時間より短ければ「・」、以上なら「－」として判定します。</div>
+      <div class="setting-control">
+        <input id="dashRange" type="range" min="80" max="500" step="10" />
+        <div class="number-wrap"><input id="dashNumber" type="number" inputmode="numeric" min="80" max="500" step="10" /><span class="unit">ms</span></div>
+      </div>
+      <div class="scale-labels"><span>短い</span><span>デフォルト 180ms</span><span>長い</span></div>
+    </div>
+
+    <div class="setting-row">
+      <div class="setting-name">文字同士の境界</div>
+      <div class="setting-help">最後の入力から、この時間だけ何も押さなければ1文字として自動確定します。</div>
+      <div class="setting-control">
+        <input id="gapRange" type="range" min="300" max="2000" step="50" />
+        <div class="number-wrap"><input id="gapNumber" type="number" inputmode="numeric" min="300" max="2000" step="50" /><span class="unit">ms</span></div>
+      </div>
+      <div class="scale-labels"><span>速く確定</span><span>デフォルト 850ms</span><span>ゆっくり</span></div>
+    </div>
+
+    <div class="setting-actions">
+      <button id="resetSettings" class="btn" type="button">デフォルトに戻す</button>
+      <button id="doneSettings" class="btn" type="button">完了</button>
+    </div>
+    <div class="settings-note">変更は自動保存され、この端末のブラウザに保持されます。サンプル音は設定画面を閉じると停止します。</div>
+  </section>
+</div>
 
 <script>
 const MORSE={
@@ -149,20 +201,39 @@ function buildTree(){
 }
 buildTree();
 
+const DEFAULT_DASH_MS=180;
+const DEFAULT_GAP_MS=850;
+const DASH_MIN=80,DASH_MAX=500,GAP_MIN=300,GAP_MAX=2000;
+const DASH_KEY='morse_dash_threshold';
+const GAP_KEY='morse_character_gap';
+
+function clamp(v,min,max){return Math.min(max,Math.max(min,v))}
+function loadSetting(key,fallback,min,max){
+  try{
+    const v=Number(localStorage.getItem(key));
+    return Number.isFinite(v)&&v>=min&&v<=max?v:fallback;
+  }catch(_){return fallback}
+}
+function saveSetting(key,value){try{localStorage.setItem(key,String(value))}catch(_){}}
+
+let DASH_MS=loadSetting(DASH_KEY,DEFAULT_DASH_MS,DASH_MIN,DASH_MAX);
+let GAP_MS=loadSetting(GAP_KEY,DEFAULT_GAP_MS,GAP_MIN,GAP_MAX);
+
 const tap=document.getElementById('tap');
+const tapSub=document.getElementById('tapSub');
 const morseEl=document.getElementById('morse');
 const decoded=document.getElementById('decoded');
 const editor=document.getElementById('editor');
 const waitfill=document.getElementById('waitfill');
-const GAP_MS=850;
-const DASH_MS=180;
 let pressStart=0,pressing=false,current='',commitTimer=null,raf=null,gapStart=0;
 let soundOn=true,audioCtx=null,osc=null,gain=null;
 
+function updateTapHelp(){tapSub.textContent=`短押し＝・　${DASH_MS}ms以上＝－　離して約${(GAP_MS/1000).toFixed(GAP_MS%1000===0?0:2)}秒で文字確定`}
 function render(){
   morseEl.textContent=current?current.replaceAll('.','・').replaceAll('-','－'):'—';
   decoded.textContent=current?(MORSE[current]||'?'):'—';
   svg.querySelectorAll('[data-path]').forEach(n=>n.classList.toggle('on',!!current&&current.startsWith(n.dataset.path)));
+  updateTapHelp();
 }
 function scrollEditor(){editor.scrollTop=editor.scrollHeight;editor.setSelectionRange(editor.value.length,editor.value.length)}
 function appendText(s){editor.value+=s;scrollEditor()}
@@ -227,7 +298,101 @@ document.getElementById('backspace').onclick=()=>{if(current){clearCurrent();ret
 document.getElementById('clearAll').onclick=()=>{clearCurrent();editor.value=''};
 document.getElementById('soundToggle').onclick=e=>{soundOn=!soundOn;e.currentTarget.textContent=soundOn?'🔊 音ON':'🔇 音OFF';if(!soundOn)stopTone()};
 
-render();
+// Settings UI
+const settingsBackdrop=document.getElementById('settingsBackdrop');
+const dashRange=document.getElementById('dashRange');
+const dashNumber=document.getElementById('dashNumber');
+const gapRange=document.getElementById('gapRange');
+const gapNumber=document.getElementById('gapNumber');
+const previewCurrent=document.getElementById('previewCurrent');
+let settingsOpen=false,previewToken=0,previewOsc=null,previewGain=null;
+
+function syncSettingsUI(){
+  dashRange.value=DASH_MS;dashNumber.value=DASH_MS;
+  gapRange.value=GAP_MS;gapNumber.value=GAP_MS;
+}
+function applyDash(value){
+  const v=clamp(Math.round(Number(value)||DEFAULT_DASH_MS),DASH_MIN,DASH_MAX);
+  DASH_MS=v;saveSetting(DASH_KEY,v);syncSettingsUI();render();restartPreview();
+}
+function applyGap(value){
+  const v=clamp(Math.round(Number(value)||DEFAULT_GAP_MS),GAP_MIN,GAP_MAX);
+  GAP_MS=v;saveSetting(GAP_KEY,v);syncSettingsUI();render();
+  if(current&&!pressing)scheduleCommit();
+  restartPreview();
+}
+
+dashRange.addEventListener('input',e=>applyDash(e.target.value));
+gapRange.addEventListener('input',e=>applyGap(e.target.value));
+dashNumber.addEventListener('change',e=>applyDash(e.target.value));
+gapNumber.addEventListener('change',e=>applyGap(e.target.value));
+dashNumber.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();applyDash(e.currentTarget.value);e.currentTarget.blur()}});
+gapNumber.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();applyGap(e.currentTarget.value);e.currentTarget.blur()}});
+
+function stopPreviewTone(){
+  if(!previewOsc||!audioCtx)return;
+  try{previewGain.gain.cancelScheduledValues(audioCtx.currentTime);previewGain.gain.setValueAtTime(Math.max(previewGain.gain.value,0.0001),audioCtx.currentTime);previewGain.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.02);previewOsc.stop(audioCtx.currentTime+0.025)}catch(_){}
+  previewOsc=null;previewGain=null;
+}
+function wait(ms,token){return new Promise(resolve=>setTimeout(()=>resolve(token===previewToken),Math.max(0,ms)))}
+async function previewTone(ms,token,symbol){
+  if(!settingsOpen||token!==previewToken)return false;
+  ensureAudio();if(!audioCtx)return wait(ms,token);
+  stopPreviewTone();
+  previewCurrent.textContent=symbol==='.'?'・ トン':'－ ツー';
+  previewOsc=audioCtx.createOscillator();previewGain=audioCtx.createGain();
+  previewOsc.type='sine';previewOsc.frequency.value=660;
+  previewGain.gain.setValueAtTime(0.0001,audioCtx.currentTime);previewGain.gain.exponentialRampToValueAtTime(0.20,audioCtx.currentTime+0.01);
+  previewOsc.connect(previewGain);previewGain.connect(audioCtx.destination);previewOsc.start();
+  const ok=await wait(ms,token);stopPreviewTone();return ok;
+}
+async function runPreview(token){
+  const sample=['...','---','...'];
+  while(settingsOpen&&token===previewToken){
+    for(let ci=0;ci<sample.length;ci++){
+      const code=sample[ci];
+      for(let si=0;si<code.length;si++){
+        const symbol=code[si];
+        const dotMs=Math.max(45,Math.round(DASH_MS*0.55));
+        const dashMs=Math.max(dotMs+20,Math.round(DASH_MS*1.5));
+        if(!await previewTone(symbol==='.'?dotMs:dashMs,token,symbol))return;
+        if(si<code.length-1){
+          previewCurrent.textContent='記号間';
+          if(!await wait(Math.max(35,Math.round(DASH_MS*0.5)),token))return;
+        }
+      }
+      if(ci<sample.length-1){
+        previewCurrent.textContent=`文字間 ${GAP_MS}ms`;
+        if(!await wait(GAP_MS,token))return;
+      }
+    }
+    previewCurrent.textContent='SOS ループ';
+    if(!await wait(Math.max(450,Math.round(GAP_MS*1.25)),token))return;
+  }
+}
+function restartPreview(){
+  if(!settingsOpen)return;
+  previewToken++;stopPreviewTone();
+  const token=previewToken;
+  previewCurrent.textContent='設定を反映中…';
+  setTimeout(()=>{if(settingsOpen&&token===previewToken)runPreview(token)},35);
+}
+function openSettings(){
+  settingsOpen=true;settingsBackdrop.classList.add('open');settingsBackdrop.setAttribute('aria-hidden','false');document.body.classList.add('settings-open');
+  syncSettingsUI();ensureAudio();restartPreview();
+}
+function closeSettings(){
+  settingsOpen=false;previewToken++;stopPreviewTone();previewCurrent.textContent='設定を耳で確認できます';settingsBackdrop.classList.remove('open');settingsBackdrop.setAttribute('aria-hidden','true');document.body.classList.remove('settings-open');
+}
+
+document.getElementById('openSettings').onclick=openSettings;
+document.getElementById('closeSettings').onclick=closeSettings;
+document.getElementById('doneSettings').onclick=closeSettings;
+document.getElementById('resetSettings').onclick=()=>{DASH_MS=DEFAULT_DASH_MS;GAP_MS=DEFAULT_GAP_MS;saveSetting(DASH_KEY,DASH_MS);saveSetting(GAP_KEY,GAP_MS);syncSettingsUI();render();if(current&&!pressing)scheduleCommit();restartPreview()};
+settingsBackdrop.addEventListener('pointerdown',e=>{if(e.target===settingsBackdrop)closeSettings()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&settingsOpen)closeSettings()});
+
+syncSettingsUI();render();
 </script>
 </body>
 </html>
