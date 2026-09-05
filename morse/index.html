@@ -1,15 +1,229 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Morse Tap</title><style>
-:root{--line:#9fb0bf;--green:#25f05a;--text:#f4f8fb;--muted:#8396a4}*{box-sizing:border-box;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 12%,#102639,#07111a 55%,#04090e);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{min-height:100vh;padding:14px 12px 28px;overscroll-behavior:none}.app{max-width:540px;margin:auto}.header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 2px 12px}.title{font-size:clamp(27px,8vw,43px);font-weight:300;letter-spacing:.18em;white-space:nowrap}.mini,.btn{border:1px solid #334d5c;background:#102230;color:#dce7ef;border-radius:14px;padding:12px 14px;font-size:14px}.card{background:linear-gradient(180deg,rgba(18,39,55,.96),rgba(8,23,34,.96));border:1px solid #284150;border-radius:26px}.tree-wrap{padding:10px 8px 12px;overflow:hidden}.tree-title{text-align:center;font-size:12px;color:#93a8b7;margin:4px 0 6px}.tree-stage{width:100%}.tree-stage svg{width:100%;height:auto;display:block}.wire{stroke:var(--line);stroke-width:4;stroke-linecap:round;fill:none;opacity:.9}.wire.on{stroke:var(--green);filter:drop-shadow(0 0 4px #20ff58) drop-shadow(0 0 10px rgba(32,255,88,.7))}.node-shape{fill:#263743;stroke:#a8bac7;stroke-width:3}.node-shape.on{fill:var(--green);stroke:#8affaa;filter:drop-shadow(0 0 4px #20ff58) drop-shadow(0 0 10px #20ff58)}.node-letter{fill:#eef5fa;font-size:20px;font-weight:600;dominant-baseline:middle}.legend{display:flex;justify-content:center;gap:16px;color:#bdcbd5;font-size:12px}.lg-dot,.lg-dash{display:inline-block;border:2px solid #a8bac7;background:#263743}.lg-dot{width:16px;height:16px;border-radius:50%}.lg-dash{width:24px;height:13px;border-radius:3px}.controls{margin-top:14px;padding:14px}.status{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.readout{background:#07131c;border:1px solid #2a4555;border-radius:18px;padding:12px;text-align:center;min-height:88px}.label{font-size:12px;color:#8da2b2;margin-bottom:8px}.morse{font-size:32px;letter-spacing:.11em}.decoded{font-size:38px;font-weight:700}#tap{width:100%;height:180px;border:0;border-radius:999px;background:radial-gradient(circle at 50% 35%,#2ecb57,#14953a 62%,#0d6629);color:#fff;font-size:24px;font-weight:800;touch-action:none;box-shadow:0 0 0 4px #5bf07e inset,0 0 20px rgba(38,240,91,.42)}.tap-sub{display:block;font-size:13px;font-weight:500;opacity:.85;margin-top:6px}#tap.active{transform:scale(.965);filter:brightness(1.35)}.bottom{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.hint{text-align:center;color:var(--muted);font-size:12px;margin-top:10px;line-height:1.6}@media(max-width:390px){.node-letter{font-size:18px}.title{letter-spacing:.12em}.morse{font-size:27px}}
-</style></head><body><main class="app"><div class="header"><div class="title">MORSE CODE</div><button id="clearTop" class="mini">クリア</button></div><section class="card tree-wrap"><div class="tree-title">同じ記号は直進 ／ ・→－ は右折 ／ －→・ は左折</div><div class="tree-stage"><svg id="treeSvg" aria-label="モールス樹形図"></svg></div><div class="legend"><span><i class="lg-dot"></i> ・ 点</span><span><i class="lg-dash"></i> － 線</span></div></section><section class="card controls"><div class="status"><div class="readout"><div class="label">モールス</div><div id="morse" class="morse">—</div></div><div class="readout"><div class="label">解読結果</div><div id="decoded" class="decoded">?</div></div></div><button id="tap" type="button">タップで入力<span class="tap-sub">短押し：・ ／ 長押し：－</span></button><div class="bottom"><button id="space" class="btn">↔ 文字を確定</button><button id="clear" class="btn">⌫ クリア</button></div><div class="hint">入力した経路だけ緑に光ります。350ms未満＝「・」、350ms以上＝「－」。</div></section></main><script>
-const MORSE={'.-':'A','-...':'B','-.-.':'C','-..':'D','.':'E','..-.':'F','--.':'G','....':'H','..':'I','.---':'J','-.-':'K','.-..':'L','--':'M','-.':'N','---':'O','.--.':'P','--.-':'Q','.-.':'R','...':'S','-':'T','..-':'U','...-':'V','.--':'W','-..-':'X','-.--':'Y','--..':'Z'};
-const svg=document.getElementById('treeSvg'),NS='http://www.w3.org/2000/svg',STEP=72,DIRS=[[1,0],[0,1],[-1,0],[0,-1]],root={x:300,y:70};
-// 指定された縦方向の間隔だけを固定で拡張する。値は通常間隔の倍率。
-// T→N: +2、N→D: +1、E→A: +2、A→W: +1、I→U: +1
-const EDGE_SCALE={'-.':3,'-..':2,'.-':3,'.--':2,'..-':2};
-function calc(path){let x=root.x,y=root.y,dir=null,prev=null,pts=[{x,y,path:''}];for(let i=0;i<path.length;i++){const s=path[i],prefix=path.slice(0,i+1);if(i===0)dir=s==='.'?0:2;else if(s!==prev)dir=(dir+(prev==='.'&&s==='-'?1:3))%4;const scale=EDGE_SCALE[prefix]||1;x+=DIRS[dir][0]*STEP*scale;y+=DIRS[dir][1]*STEP*scale;pts.push({x,y,path:prefix});prev=s}return pts}
-const paths=Object.keys(MORSE).sort((a,b)=>a.length-b.length||a.localeCompare(b)),geom={};paths.forEach(p=>geom[p]=calc(p));
-let xs=[root.x],ys=[28,root.y];for(const p of paths)for(const q of geom[p]){xs.push(q.x);ys.push(q.y)}const minX=Math.min(...xs)-72,maxX=Math.max(...xs)+72,minY=10,maxY=Math.max(...ys)+65;svg.setAttribute('viewBox',`${minX} ${minY} ${maxX-minX} ${maxY-minY}`);
-function el(tag,a={}){const n=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(a))n.setAttribute(k,v);return n}function build(){svg.innerHTML='';svg.appendChild(el('line',{x1:root.x,y1:28,x2:root.x,y2:root.y,class:'wire'}));svg.appendChild(el('path',{d:`M${root.x-20} 28 L${root.x} 50 L${root.x+20} 28 M${root.x-20} 28 L${root.x+20} 28`,class:'wire'}));for(const p of paths){const pts=geom[p],a=pts.at(-2),b=pts.at(-1);svg.appendChild(el('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:'wire','data-path':p}))}for(const p of paths){const g=geom[p].at(-1),s=p.at(-1);const shape=s==='.'?el('circle',{cx:g.x,cy:g.y,r:16,class:'node-shape','data-path':p}):el('rect',{x:g.x-22,y:g.y-13,width:44,height:26,rx:3,class:'node-shape','data-path':p});svg.appendChild(shape);const side=g.x<root.x?-1:1,t=el('text',{x:g.x+side*30,y:g.y,class:'node-letter','text-anchor':side<0?'end':'start'});t.textContent=MORSE[p];svg.appendChild(t)}}build();
-const tap=document.getElementById('tap'),morseEl=document.getElementById('morse'),decoded=document.getElementById('decoded');let start=null,pressing=false,current='',text='';function render(){morseEl.textContent=current?current.replaceAll('.','・').replaceAll('-','－'):'—';decoded.textContent=current?(MORSE[current]||'…'):(text.slice(-1)||'?');svg.querySelectorAll('[data-path]').forEach(n=>n.classList.toggle('on',current.startsWith(n.dataset.path)))}function down(e){if(e.cancelable)e.preventDefault();if(pressing)return;pressing=true;start=Date.now();tap.classList.add('active')}function up(e){if(e.cancelable)e.preventDefault();if(!pressing)return;current+=Date.now()-start<350?'.':'-';pressing=false;start=null;tap.classList.remove('active');render()}function clearAll(){current='';text='';render()}function commit(){if(current&&MORSE[current]){text+=MORSE[current];current='';render()}}tap.addEventListener('touchstart',down,{passive:false});tap.addEventListener('touchend',up,{passive:false});tap.addEventListener('touchcancel',up,{passive:false});tap.addEventListener('mousedown',down);tap.addEventListener('mouseup',up);tap.addEventListener('contextmenu',e=>e.preventDefault());document.getElementById('space').onclick=commit;document.getElementById('clear').onclick=clearAll;document.getElementById('clearTop').onclick=clearAll;render();
-</script></body></html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Morse Tap</title>
+<style>
+:root{--line:#9fb0bf;--green:#25f05a;--text:#f4f8fb;--muted:#8396a4}
+*{box-sizing:border-box;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 12%,#102639,#07111a 55%,#04090e);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100vh;padding:14px 12px 28px;overscroll-behavior:none}
+.app{max-width:560px;margin:auto}
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 2px 12px}
+.title{font-size:clamp(27px,8vw,43px);font-weight:300;letter-spacing:.18em;white-space:nowrap}
+.mini,.btn{border:1px solid #334d5c;background:#102230;color:#dce7ef;border-radius:14px;padding:12px 14px;font-size:14px}
+.card{background:linear-gradient(180deg,rgba(18,39,55,.96),rgba(8,23,34,.96));border:1px solid #284150;border-radius:26px}
+.tree-wrap{padding:10px 8px 12px;overflow:hidden}
+.tree-title{text-align:center;font-size:12px;color:#93a8b7;margin:4px 0 8px;line-height:1.5}
+.tree-stage{width:100%}
+.tree-stage svg{width:100%;height:auto;display:block}
+.wire{stroke:var(--line);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;fill:none;opacity:.9}
+.wire.on{stroke:var(--green);filter:drop-shadow(0 0 4px #20ff58) drop-shadow(0 0 10px rgba(32,255,88,.7))}
+.node-shape{fill:#263743;stroke:#a8bac7;stroke-width:3}
+.node-shape.on{fill:var(--green);stroke:#8affaa;filter:drop-shadow(0 0 4px #20ff58) drop-shadow(0 0 10px #20ff58)}
+.node-letter{fill:#eef5fa;font-size:20px;font-weight:700;dominant-baseline:middle}
+.root-dot{fill:#e7f1f8;stroke:#a8bac7;stroke-width:3}
+.root-label{fill:#8fa5b5;font-size:13px;font-weight:700;letter-spacing:.12em}
+.legend{display:flex;justify-content:center;gap:16px;color:#bdcbd5;font-size:12px;margin-top:4px}
+.lg-dot,.lg-dash{display:inline-block;border:2px solid #a8bac7;background:#263743}
+.lg-dot{width:16px;height:16px;border-radius:50%}.lg-dash{width:24px;height:13px;border-radius:3px}
+.controls{margin-top:14px;padding:14px}
+.status{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.readout{background:#07131c;border:1px solid #2a4555;border-radius:18px;padding:12px;text-align:center;min-height:88px}
+.label{font-size:12px;color:#8da2b2;margin-bottom:8px}.morse{font-size:32px;letter-spacing:.11em}.decoded{font-size:38px;font-weight:700}
+#tap{width:100%;height:180px;border:0;border-radius:999px;background:radial-gradient(circle at 50% 35%,#2ecb57,#14953a 62%,#0d6629);color:#fff;font-size:24px;font-weight:800;touch-action:none;box-shadow:0 0 0 4px #5bf07e inset,0 0 20px rgba(38,240,91,.42),0 18px 35px rgba(0,0,0,.28)}
+.tap-sub{display:block;font-size:13px;font-weight:500;opacity:.85;margin-top:6px}
+#tap.active{transform:scale(.965);filter:brightness(1.35);box-shadow:0 0 0 5px #8affaa inset,0 0 25px #21ff58,0 0 55px rgba(33,255,88,.55)}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.hint{text-align:center;color:var(--muted);font-size:12px;margin-top:10px;line-height:1.6}
+@media(max-width:390px){.node-letter{font-size:18px}.title{letter-spacing:.12em}.morse{font-size:27px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <div class="header"><div class="title">MORSE CODE</div><button id="clearTop" class="mini">クリア</button></div>
+
+  <section class="card tree-wrap">
+    <div class="tree-title">・は右、－は左 ／ 同じ記号は直進 ／ ・→－は右折 ／ －→・は左折</div>
+    <div class="tree-stage"><svg id="treeSvg" aria-label="モールス樹形図"></svg></div>
+    <div class="legend"><span><i class="lg-dot"></i> ・ 点</span><span><i class="lg-dash"></i> － 線</span></div>
+  </section>
+
+  <section class="card controls">
+    <div class="status">
+      <div class="readout"><div class="label">モールス</div><div id="morse" class="morse">—</div></div>
+      <div class="readout"><div class="label">解読結果</div><div id="decoded" class="decoded">?</div></div>
+    </div>
+    <button id="tap" type="button">タップで入力<span class="tap-sub">短押し：・ ／ 長押し：－</span></button>
+    <div class="bottom"><button id="space" class="btn">↔ 文字を確定</button><button id="clear" class="btn">⌫ クリア</button></div>
+    <div class="hint">入力した経路だけ緑に光ります。350ms未満＝「・」、350ms以上＝「－」。</div>
+  </section>
+</main>
+
+<script>
+const MORSE={
+  '.':'E','-':'T','..':'I','.-':'A','-.':'N','--':'M',
+  '...':'S','..-':'U','.-.':'R','.--':'W','-..':'D','-.-':'K','--.':'G','---':'O',
+  '....':'H','...-':'V','..-.':'F','.-..':'L','.--.':'P','.---':'J',
+  '-...':'B','-..-':'X','-.-.':'C','-.--':'Y','--..':'Z','--.-':'Q'
+};
+
+const svg=document.getElementById('treeSvg');
+const NS='http://www.w3.org/2000/svg';
+const STEP=78;
+const ROOT={x:400,y:68};
+const DIRS=[[1,0],[0,1],[-1,0],[0,-1]]; // 右・下・左・上
+
+// 通常は1区画。指定された5本だけ縦方向の間隔を広げる。
+// T→N +2 / N→D +1 / E→A +2 / A→W +1 / I→U +1
+const EDGE_SCALE={
+  '-.':3,
+  '-..':2,
+  '.-':3,
+  '.--':2,
+  '..-':2
+};
+
+// 文字ごとに計算し直さず、樹形そのものを根元から一度だけ構築する。
+// これにより、同じ枝は必ず同じ座標・同じ一本の線になる。
+const nodes={'':{path:'',x:ROOT.x,y:ROOT.y,dir:null}};
+const paths=Object.keys(MORSE).sort((a,b)=>a.length-b.length||a.localeCompare(b));
+
+for(const path of paths){
+  const parentPath=path.slice(0,-1);
+  const parent=nodes[parentPath];
+  const symbol=path.at(-1);
+  let dir;
+
+  if(path.length===1){
+    dir=symbol==='.'?0:2; // 最初の・は右、－は左
+  }else{
+    const prev=path.at(-2);
+    dir=parent.dir;
+    if(symbol!==prev){
+      if(prev==='.' && symbol==='-') dir=(dir+1)%4; // 右へ90度
+      if(prev==='-' && symbol==='.') dir=(dir+3)%4; // 左へ90度
+    }
+  }
+
+  const scale=EDGE_SCALE[path]||1;
+  nodes[path]={
+    path,
+    parentPath,
+    symbol,
+    dir,
+    x:parent.x+DIRS[dir][0]*STEP*scale,
+    y:parent.y+DIRS[dir][1]*STEP*scale
+  };
+}
+
+// 全26文字が重ならないこと、FがVのちょうど1区画下であることを前提に固定配置。
+const positions=paths.map(p=>nodes[p]);
+const minX=Math.min(ROOT.x,...positions.map(n=>n.x))-86;
+const maxX=Math.max(ROOT.x,...positions.map(n=>n.x))+86;
+const minY=8;
+const maxY=Math.max(ROOT.y,...positions.map(n=>n.y))+70;
+svg.setAttribute('viewBox',`${minX} ${minY} ${maxX-minX} ${maxY-minY}`);
+
+function el(tag,attrs={}){
+  const n=document.createElementNS(NS,tag);
+  for(const [k,v] of Object.entries(attrs)) n.setAttribute(k,v);
+  return n;
+}
+
+function labelPosition(node){
+  // 線の向きに対して少し外側へ文字を置く。配置は固定で、ノード自体は動かさない。
+  const side=node.x<ROOT.x?-1:1;
+  return {x:node.x+side*30,y:node.y,anchor:side<0?'end':'start'};
+}
+
+function buildTree(){
+  svg.innerHTML='';
+
+  // START
+  svg.appendChild(el('line',{x1:ROOT.x,y1:26,x2:ROOT.x,y2:ROOT.y-10,class:'wire'}));
+  svg.appendChild(el('circle',{cx:ROOT.x,cy:ROOT.y,r:9,class:'root-dot'}));
+  const startText=el('text',{x:ROOT.x,y:18,class:'root-label','text-anchor':'middle'});
+  startText.textContent='START';
+  svg.appendChild(startText);
+
+  // 各枝は一度だけ描画する。
+  for(const path of paths){
+    const node=nodes[path];
+    const parent=nodes[node.parentPath];
+    svg.appendChild(el('line',{
+      x1:parent.x,y1:parent.y,x2:node.x,y2:node.y,
+      class:'wire','data-path':path
+    }));
+  }
+
+  // ノードと英字
+  for(const path of paths){
+    const node=nodes[path];
+    let shape;
+    if(node.symbol==='.'){
+      shape=el('circle',{cx:node.x,cy:node.y,r:16,class:'node-shape','data-path':path});
+    }else{
+      shape=el('rect',{x:node.x-22,y:node.y-13,width:44,height:26,rx:3,class:'node-shape','data-path':path});
+    }
+    svg.appendChild(shape);
+
+    const lp=labelPosition(node);
+    const text=el('text',{x:lp.x,y:lp.y,class:'node-letter','text-anchor':lp.anchor});
+    text.textContent=MORSE[path];
+    svg.appendChild(text);
+  }
+}
+
+buildTree();
+
+const tap=document.getElementById('tap');
+const morseEl=document.getElementById('morse');
+const decoded=document.getElementById('decoded');
+let start=null,pressing=false,current='',text='';
+
+function render(){
+  morseEl.textContent=current?current.replaceAll('.','・').replaceAll('-','－'):'—';
+  decoded.textContent=current?(MORSE[current]||'…'):(text.slice(-1)||'?');
+  svg.querySelectorAll('[data-path]').forEach(n=>{
+    n.classList.toggle('on',current.startsWith(n.dataset.path));
+  });
+}
+
+function down(e){
+  if(e.cancelable)e.preventDefault();
+  if(pressing)return;
+  pressing=true;
+  start=Date.now();
+  tap.classList.add('active');
+}
+
+function up(e){
+  if(e.cancelable)e.preventDefault();
+  if(!pressing)return;
+  current+=Date.now()-start<350?'.':'-';
+  pressing=false;
+  start=null;
+  tap.classList.remove('active');
+  render();
+}
+
+function clearAll(){current='';text='';render();}
+function commit(){if(current&&MORSE[current]){text+=MORSE[current];current='';render();}}
+
+tap.addEventListener('touchstart',down,{passive:false});
+tap.addEventListener('touchend',up,{passive:false});
+tap.addEventListener('touchcancel',up,{passive:false});
+tap.addEventListener('mousedown',down);
+tap.addEventListener('mouseup',up);
+tap.addEventListener('mouseleave',e=>{if(pressing)up(e)});
+tap.addEventListener('contextmenu',e=>e.preventDefault());
+tap.addEventListener('selectstart',e=>e.preventDefault());
+document.getElementById('space').onclick=commit;
+document.getElementById('clear').onclick=clearAll;
+document.getElementById('clearTop').onclick=clearAll;
+render();
+</script>
+</body>
+</html>
