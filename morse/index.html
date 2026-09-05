@@ -34,8 +34,9 @@ button,input{font:inherit}
 .node-letter{fill:#eef5fa;font-size:22px;font-weight:700;dominant-baseline:middle}.root-dot{fill:#e7f1f8;stroke:#a8bac7;stroke-width:3}.root-label{fill:#8fa5b5;font-size:14px;font-weight:700;letter-spacing:.12em}
 .work{padding:8px;display:grid;gap:7px}
 .editor-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.editor-title{font-size:11px;color:#9fb1bf;font-weight:700;letter-spacing:.08em}.editor-tools{display:flex;gap:5px}
-#editor{display:block;width:100%;height:clamp(70px,13svh,120px);resize:none;border:1px solid #2a4555;border-radius:13px;background:var(--panel2);color:#fff;padding:10px 11px;font:600 clamp(18px,5.5vw,25px)/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;outline:none;-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
-#editor:focus{border-color:#4b7188;box-shadow:0 0 0 2px rgba(75,113,136,.18)}
+#editor,#morseEditor{display:block;width:100%;height:clamp(70px,13svh,120px);resize:none;border:1px solid #2a4555;border-radius:13px;background:var(--panel2);color:#fff;padding:10px 11px;font:600 clamp(18px,5.5vw,25px)/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;outline:none;-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+#morseEditor{height:clamp(48px,9svh,82px);font-size:clamp(15px,4.5vw,20px);letter-spacing:.06em}
+#editor:focus,#morseEditor:focus{border-color:#4b7188;box-shadow:0 0 0 2px rgba(75,113,136,.18)}
 .status{display:grid;grid-template-columns:1.35fr .65fr;gap:7px}.readout{background:var(--panel2);border:1px solid #2a4555;border-radius:12px;padding:6px 8px;text-align:center;min-height:54px}.label{font-size:9px;color:#8da2b2;margin-bottom:2px}.morse{font-size:clamp(21px,6vw,29px);letter-spacing:.08em;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.decoded{font-size:clamp(24px,7vw,32px);font-weight:800;line-height:1.05}
 .waitbar{height:3px;background:#152b39;border-radius:99px;overflow:hidden}.waitfill{height:100%;width:0;background:var(--green);box-shadow:0 0 8px rgba(37,240,90,.7)}
 #tap{width:100%;height:clamp(105px,18svh,160px);border:0;border-radius:22px;background:radial-gradient(circle at 50% 30%,#31d85d,#15953b 64%,#0d6629);color:#fff;font-size:clamp(20px,6vw,26px);font-weight:850;touch-action:none;box-shadow:0 0 0 3px #5bf07e inset,0 0 18px rgba(38,240,91,.34),0 10px 24px rgba(0,0,0,.24);transition:transform .06s,filter .06s}
@@ -50,10 +51,10 @@ button,input{font:inherit}
 .preview{background:#06121b;border:1px solid #284554;border-radius:15px;padding:10px 12px;margin-bottom:11px;text-align:center}.preview-top{display:flex;align-items:center;justify-content:center;gap:7px;color:#a7bac7;font-size:11px}.preview-led{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 9px var(--green)}.preview-code{font:800 25px/1.25 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;margin-top:5px}.preview-current{height:20px;margin-top:2px;color:var(--green);font-size:13px;font-weight:800}.setting-row{background:#0a1924;border:1px solid #294451;border-radius:15px;padding:11px;margin-top:9px}.setting-name{font-size:14px;font-weight:800}.setting-help{font-size:10px;color:#8499a8;margin-top:3px;line-height:1.45}.setting-control{display:grid;grid-template-columns:1fr 94px;gap:10px;align-items:center;margin-top:10px}.setting-control input[type="range"]{width:100%;accent-color:var(--green)}.number-wrap{display:flex;align-items:center;gap:4px}.number-wrap input{width:67px;background:#06121b;color:#fff;border:1px solid #3a596a;border-radius:9px;padding:8px 6px;text-align:right;font-weight:750;outline:none}.number-wrap input:focus{border-color:var(--green)}.unit{font-size:11px;color:#9aafbc}.scale-labels{display:flex;justify-content:space-between;color:#6f8796;font-size:9px;margin-top:1px}.setting-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px}.settings-note{font-size:9px;color:#718794;line-height:1.45;margin:8px 2px 0;text-align:center}
 
 @media(max-width:380px){
-  body{padding-left:6px;padding-right:6px}.app{gap:6px}.title{font-size:18px;letter-spacing:.08em}.header-actions{gap:3px}.header-actions .mini{padding:7px 7px;font-size:11px}.mode-tab{padding:7px 8px;font-size:11px}.tree-stage{height:clamp(185px,33svh,260px)}.tree-title{font-size:9px}.node-letter{font-size:20px}.work{padding:6px;gap:5px}#editor{height:70px;padding:8px 9px}.readout{min-height:48px;padding:5px}.label{font-size:8px}#tap{height:100px;border-radius:18px}.bottom{gap:5px}.btn{padding:8px 5px}.hint{font-size:9px}.settings-backdrop{padding-left:5px;padding-right:5px}.settings-sheet{padding:10px;max-height:88svh}.setting-control{grid-template-columns:1fr 86px;gap:7px}.number-wrap input{width:60px}.preview-code{font-size:22px}
+  body{padding-left:6px;padding-right:6px}.app{gap:6px}.title{font-size:18px;letter-spacing:.08em}.header-actions{gap:3px}.header-actions .mini{padding:7px 7px;font-size:11px}.mode-tab{padding:7px 8px;font-size:11px}.tree-stage{height:clamp(185px,33svh,260px)}.tree-title{font-size:9px}.node-letter{font-size:20px}.work{padding:6px;gap:5px}#editor,#morseEditor{padding:8px 9px}#editor{height:70px}#morseEditor{height:52px}.readout{min-height:48px;padding:5px}.label{font-size:8px}#tap{height:100px;border-radius:18px}.bottom{gap:5px}.btn{padding:8px 5px}.hint{font-size:9px}.settings-backdrop{padding-left:5px;padding-right:5px}.settings-sheet{padding:10px;max-height:88svh}.setting-control{grid-template-columns:1fr 86px;gap:7px}.number-wrap input{width:60px}.preview-code{font-size:22px}
 }
 @media(max-height:680px){
-  body{padding-top:5px;padding-bottom:5px}.header{min-height:30px}.title{font-size:18px}.mode-tab{padding:6px 8px}.tree-stage{height:190px}#editor{height:62px;font-size:18px}.readout{min-height:45px}#tap{height:88px}.tap-sub{margin-top:1px}.hint{display:none}.settings-sheet{max-height:91svh}.preview{padding:7px 10px}.setting-row{padding:9px}.setting-help{line-height:1.3}
+  body{padding-top:5px;padding-bottom:5px}.header{min-height:30px}.title{font-size:18px}.mode-tab{padding:6px 8px}.tree-stage{height:190px}#editor{height:62px;font-size:18px}#morseEditor{height:46px;font-size:15px}.readout{min-height:45px}#tap{height:88px}.tap-sub{margin-top:1px}.hint{display:none}.settings-sheet{max-height:91svh}.preview{padding:7px 10px}.setting-row{padding:9px}.setting-help{line-height:1.3}
 }
 </style>
 </head>
@@ -87,6 +88,11 @@ button,input{font:inherit}
       </div>
     </div>
     <textarea id="editor" aria-label="モールス解読テキスト" placeholder="ここに文字が入力されます"></textarea>
+
+    <div class="editor-head">
+      <div class="editor-title">MORSE EDITOR</div>
+    </div>
+    <textarea id="morseEditor" aria-label="認識されたモールス列" placeholder="・・・ －－－ ・・・"></textarea>
 
     <div class="status">
       <div class="readout"><div class="label">入力中</div><div id="morse" class="morse">—</div></div>
@@ -262,6 +268,7 @@ const tapSub=document.getElementById('tapSub');
 const morseEl=document.getElementById('morse');
 const decoded=document.getElementById('decoded');
 const editor=document.getElementById('editor');
+const morseEditor=document.getElementById('morseEditor');
 const waitfill=document.getElementById('waitfill');
 let pressStart=0,pressing=false,current='',commitTimer=null,raf=null,gapStart=0;
 let soundOn=true,audioCtx=null,osc=null,gain=null;
@@ -291,7 +298,13 @@ function setMode(mode){
   clearCurrent();activeMode=mode;saveMode();buildTree();render();
 }
 function scrollEditor(){editor.scrollTop=editor.scrollHeight;editor.setSelectionRange(editor.value.length,editor.value.length)}
+function scrollMorseEditor(){morseEditor.scrollTop=morseEditor.scrollHeight;morseEditor.setSelectionRange(morseEditor.value.length,morseEditor.value.length)}
 function appendText(s){editor.value+=s;scrollEditor()}
+function formatMorse(code){return code.replaceAll('.','・').replaceAll('-','－')}
+function appendMorse(code){
+  if(morseEditor.value&&!/[\s]$/.test(morseEditor.value))morseEditor.value+=' ';
+  morseEditor.value+=formatMorse(code);scrollMorseEditor();
+}
 function stopGapAnimation(){if(raf)cancelAnimationFrame(raf);raf=null;waitfill.style.width='0%'}
 function animateGap(){
   const pct=Math.min(100,(performance.now()-gapStart)/GAP_MS*100);waitfill.style.width=pct+'%';
@@ -306,7 +319,9 @@ function scheduleCommit(){
 function commitCurrent(){
   clearTimeout(commitTimer);commitTimer=null;stopGapAnimation();
   if(!current)return;
-  appendText(getMap()[current]||'?');
+  const committed=current;
+  appendText(getMap()[committed]||'?');
+  appendMorse(committed);
   current='';render();
 }
 function clearCurrent(){clearTimeout(commitTimer);commitTimer=null;stopGapAnimation();current='';render()}
@@ -352,7 +367,7 @@ document.getElementById('commitNow').onclick=commitCurrent;
 document.getElementById('clearCurrent').onclick=clearCurrent;
 document.getElementById('addSpace').onclick=()=>{if(current)commitCurrent();appendText(' ')};
 document.getElementById('backspace').onclick=()=>{if(current){clearCurrent();return}editor.value=editor.value.slice(0,-1);scrollEditor()};
-document.getElementById('clearAll').onclick=()=>{clearCurrent();editor.value=''};
+document.getElementById('clearAll').onclick=()=>{clearCurrent();editor.value='';morseEditor.value=''};
 document.getElementById('soundToggle').onclick=e=>{soundOn=!soundOn;e.currentTarget.textContent=soundOn?'🔊 音ON':'🔇 音OFF';if(!soundOn)stopTone()};
 
 // Settings UI
