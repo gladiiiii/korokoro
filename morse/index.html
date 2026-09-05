@@ -3,61 +3,84 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#07111a" />
 <title>Morse Tap</title>
 <style>
-:root{--line:#9fb0bf;--green:#25f05a;--text:#f4f8fb;--muted:#8396a4}
-*{box-sizing:border-box;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 12%,#102639,#07111a 55%,#04090e);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-body{min-height:100vh;padding:14px 12px 28px;overscroll-behavior:none}
-.app{max-width:560px;margin:auto}
-.header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 2px 12px}
-.title{font-size:clamp(27px,8vw,43px);font-weight:300;letter-spacing:.18em;white-space:nowrap}
-.mini,.btn{border:1px solid #334d5c;background:#102230;color:#dce7ef;border-radius:14px;padding:12px 14px;font-size:14px}
-.card{background:linear-gradient(180deg,rgba(18,39,55,.96),rgba(8,23,34,.96));border:1px solid #284150;border-radius:26px}
-.tree-wrap{padding:10px 8px 12px;overflow:hidden}
-.tree-title{text-align:center;font-size:12px;color:#93a8b7;margin:4px 0 8px;line-height:1.5}
-.tree-stage{width:100%}
-.tree-stage svg{width:100%;height:auto;display:block}
+:root{
+  --line:#9fb0bf;--green:#25f05a;--text:#f4f8fb;--muted:#8396a4;
+  --panel:#0d1d2a;--panel2:#07131c;--border:#284150;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 8%,#102639,#07111a 55%,#04090e);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100svh;padding:max(8px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom));overscroll-behavior:none}
+button,.tree-wrap{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.app{width:min(100%,560px);margin:auto;display:grid;gap:8px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:38px}
+.title{font-size:clamp(20px,7vw,34px);font-weight:300;letter-spacing:.16em;white-space:nowrap}
+.header-actions{display:flex;gap:6px}.mini,.btn{border:1px solid #334d5c;background:#102230;color:#dce7ef;border-radius:11px;padding:9px 11px;font-size:12px;touch-action:manipulation}
+.card{background:linear-gradient(180deg,rgba(18,39,55,.96),rgba(8,23,34,.96));border:1px solid var(--border);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.tree-wrap{padding:6px 6px 7px;overflow:hidden}
+.tree-title{text-align:center;font-size:10px;color:#93a8b7;margin:0 0 3px;line-height:1.3}
+.tree-stage{height:clamp(180px,32svh,300px);width:100%}
+.tree-stage svg{width:100%;height:100%;display:block}
 .wire{stroke:var(--line);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;fill:none;opacity:.9}
 .wire.on{stroke:var(--green);filter:drop-shadow(0 0 4px #20ff58) drop-shadow(0 0 10px rgba(32,255,88,.7))}
-.node-shape{fill:#263743;stroke:#a8bac7;stroke-width:3}
-.node-shape.on{fill:var(--green);stroke:#8affaa;filter:drop-shadow(0 0 4px #20ff58) drop-shadow(0 0 10px #20ff58)}
-.node-letter{fill:#eef5fa;font-size:20px;font-weight:700;dominant-baseline:middle}
-.root-dot{fill:#e7f1f8;stroke:#a8bac7;stroke-width:3}
-.root-label{fill:#8fa5b5;font-size:13px;font-weight:700;letter-spacing:.12em}
-.legend{display:flex;justify-content:center;gap:16px;color:#bdcbd5;font-size:12px;margin-top:4px}
-.lg-dot,.lg-dash{display:inline-block;border:2px solid #a8bac7;background:#263743}
-.lg-dot{width:16px;height:16px;border-radius:50%}.lg-dash{width:24px;height:13px;border-radius:3px}
-.controls{margin-top:14px;padding:14px}
-.status{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.readout{background:#07131c;border:1px solid #2a4555;border-radius:18px;padding:12px;text-align:center;min-height:88px}
-.label{font-size:12px;color:#8da2b2;margin-bottom:8px}.morse{font-size:32px;letter-spacing:.11em}.decoded{font-size:38px;font-weight:700}
-#tap{width:100%;height:180px;border:0;border-radius:999px;background:radial-gradient(circle at 50% 35%,#2ecb57,#14953a 62%,#0d6629);color:#fff;font-size:24px;font-weight:800;touch-action:none;box-shadow:0 0 0 4px #5bf07e inset,0 0 20px rgba(38,240,91,.42),0 18px 35px rgba(0,0,0,.28)}
-.tap-sub{display:block;font-size:13px;font-weight:500;opacity:.85;margin-top:6px}
-#tap.active{transform:scale(.965);filter:brightness(1.35);box-shadow:0 0 0 5px #8affaa inset,0 0 25px #21ff58,0 0 55px rgba(33,255,88,.55)}
-.bottom{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.hint{text-align:center;color:var(--muted);font-size:12px;margin-top:10px;line-height:1.6}
-@media(max-width:390px){.node-letter{font-size:18px}.title{letter-spacing:.12em}.morse{font-size:27px}}
+.node-shape{fill:#263743;stroke:#a8bac7;stroke-width:3}.node-shape.on{fill:var(--green);stroke:#8affaa;filter:drop-shadow(0 0 4px #20ff58) drop-shadow(0 0 10px #20ff58)}
+.node-letter{fill:#eef5fa;font-size:20px;font-weight:700;dominant-baseline:middle}.root-dot{fill:#e7f1f8;stroke:#a8bac7;stroke-width:3}.root-label{fill:#8fa5b5;font-size:13px;font-weight:700;letter-spacing:.12em}
+.work{padding:8px;display:grid;gap:7px}
+.editor-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.editor-title{font-size:11px;color:#9fb1bf;font-weight:700;letter-spacing:.08em}.editor-tools{display:flex;gap:5px}
+#editor{display:block;width:100%;height:clamp(70px,13svh,120px);resize:none;border:1px solid #2a4555;border-radius:13px;background:var(--panel2);color:#fff;padding:10px 11px;font:600 clamp(18px,5.5vw,25px)/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;outline:none;-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+#editor:focus{border-color:#4b7188;box-shadow:0 0 0 2px rgba(75,113,136,.18)}
+.status{display:grid;grid-template-columns:1.35fr .65fr;gap:7px}.readout{background:var(--panel2);border:1px solid #2a4555;border-radius:12px;padding:6px 8px;text-align:center;min-height:54px}.label{font-size:9px;color:#8da2b2;margin-bottom:2px}.morse{font-size:clamp(21px,6vw,29px);letter-spacing:.08em;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.decoded{font-size:clamp(24px,7vw,32px);font-weight:800;line-height:1.05}
+.waitbar{height:3px;background:#152b39;border-radius:99px;overflow:hidden}.waitfill{height:100%;width:0;background:var(--green);box-shadow:0 0 8px rgba(37,240,90,.7)}
+#tap{width:100%;height:clamp(105px,18svh,160px);border:0;border-radius:22px;background:radial-gradient(circle at 50% 30%,#31d85d,#15953b 64%,#0d6629);color:#fff;font-size:clamp(20px,6vw,26px);font-weight:850;touch-action:none;box-shadow:0 0 0 3px #5bf07e inset,0 0 18px rgba(38,240,91,.34),0 10px 24px rgba(0,0,0,.24);transition:transform .06s,filter .06s}
+.tap-sub{display:block;font-size:11px;font-weight:600;opacity:.82;margin-top:3px}#tap.active{transform:scale(.985);filter:brightness(1.28);box-shadow:0 0 0 4px #8affaa inset,0 0 24px #21ff58,0 0 45px rgba(33,255,88,.45)}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:7px}.btn{padding:9px 7px;font-size:12px}.hint{text-align:center;color:var(--muted);font-size:10px;line-height:1.35;margin:0}
+@media(max-width:380px){
+  body{padding-left:6px;padding-right:6px}.app{gap:6px}.title{font-size:20px;letter-spacing:.1em}.mini{padding:7px 8px}.tree-stage{height:clamp(165px,29svh,230px)}.tree-title{font-size:9px}.node-letter{font-size:18px}.work{padding:6px;gap:5px}#editor{height:70px;padding:8px 9px}.readout{min-height:48px;padding:5px}.label{font-size:8px}#tap{height:100px;border-radius:18px}.bottom{gap:5px}.btn{padding:8px 5px}.hint{font-size:9px}
+}
+@media(max-height:680px){
+  body{padding-top:5px;padding-bottom:5px}.header{min-height:30px}.title{font-size:19px}.tree-stage{height:170px}#editor{height:62px;font-size:18px}.readout{min-height:45px}#tap{height:88px}.tap-sub{margin-top:1px}.hint{display:none}
+}
 </style>
 </head>
 <body>
 <main class="app">
-  <div class="header"><div class="title">MORSE CODE</div><button id="clearTop" class="mini">クリア</button></div>
+  <div class="header">
+    <div class="title">MORSE CODE</div>
+    <div class="header-actions">
+      <button id="soundToggle" class="mini" type="button">🔊 音ON</button>
+      <button id="clearAll" class="mini" type="button">全消去</button>
+    </div>
+  </div>
 
   <section class="card tree-wrap">
-    <div class="tree-title">・は右、－は左 ／ 同じ記号は直進 ／ ・→－は右折 ／ －→・は左折</div>
+    <div class="tree-title">・右／－左　同じ記号＝直進　・→－＝右折　－→・＝左折</div>
     <div class="tree-stage"><svg id="treeSvg" aria-label="モールス樹形図"></svg></div>
-    <div class="legend"><span><i class="lg-dot"></i> ・ 点</span><span><i class="lg-dash"></i> － 線</span></div>
   </section>
 
-  <section class="card controls">
-    <div class="status">
-      <div class="readout"><div class="label">モールス</div><div id="morse" class="morse">—</div></div>
-      <div class="readout"><div class="label">解読結果</div><div id="decoded" class="decoded">?</div></div>
+  <section class="card work">
+    <div class="editor-head">
+      <div class="editor-title">TEXT EDITOR</div>
+      <div class="editor-tools">
+        <button id="addSpace" class="mini" type="button">空白</button>
+        <button id="backspace" class="mini" type="button">⌫</button>
+      </div>
     </div>
-    <button id="tap" type="button">タップで入力<span class="tap-sub">短押し：・ ／ 長押し：－</span></button>
-    <div class="bottom"><button id="space" class="btn">↔ 文字を確定</button><button id="clear" class="btn">⌫ クリア</button></div>
-    <div class="hint">入力した経路だけ緑に光ります。350ms未満＝「・」、350ms以上＝「－」。</div>
+    <textarea id="editor" aria-label="モールス解読テキスト" placeholder="ここに文字が入力されます"></textarea>
+
+    <div class="status">
+      <div class="readout"><div class="label">入力中</div><div id="morse" class="morse">—</div></div>
+      <div class="readout"><div class="label">候補</div><div id="decoded" class="decoded">—</div></div>
+    </div>
+    <div class="waitbar" aria-hidden="true"><div id="waitfill" class="waitfill"></div></div>
+
+    <button id="tap" type="button">押して送信<span class="tap-sub">短押し＝・　長押し＝－　離して約0.85秒で文字確定</span></button>
+    <div class="bottom">
+      <button id="commitNow" class="btn" type="button">今すぐ確定</button>
+      <button id="clearCurrent" class="btn" type="button">入力中を取消</button>
+    </div>
+    <p class="hint">押している間は音が鳴ります。存在しない組み合わせは「?」として登録します。</p>
   </section>
 </main>
 
@@ -73,156 +96,129 @@ const svg=document.getElementById('treeSvg');
 const NS='http://www.w3.org/2000/svg';
 const STEP=78;
 const ROOT={x:400,y:68};
-const DIRS=[[1,0],[0,1],[-1,0],[0,-1]]; // 右・下・左・上
-
-// 通常は1区画。指定された5本だけ縦方向の間隔を広げる。
+const DIRS=[[1,0],[0,1],[-1,0],[0,-1]];
 // T→N +2 / N→D +1 / E→A +2 / A→W +1 / I→U +1
-const EDGE_SCALE={
-  '-.':3,
-  '-..':2,
-  '.-':3,
-  '.--':2,
-  '..-':2
-};
-
-// 文字ごとに計算し直さず、樹形そのものを根元から一度だけ構築する。
-// これにより、同じ枝は必ず同じ座標・同じ一本の線になる。
+const EDGE_SCALE={'-.':3,'-..':2,'.-':3,'.--':2,'..-':2};
 const nodes={'':{path:'',x:ROOT.x,y:ROOT.y,dir:null}};
 const paths=Object.keys(MORSE).sort((a,b)=>a.length-b.length||a.localeCompare(b));
 
 for(const path of paths){
-  const parentPath=path.slice(0,-1);
-  const parent=nodes[parentPath];
-  const symbol=path.at(-1);
+  const parentPath=path.slice(0,-1),parent=nodes[parentPath],symbol=path.at(-1);
   let dir;
-
-  if(path.length===1){
-    dir=symbol==='.'?0:2; // 最初の・は右、－は左
-  }else{
-    const prev=path.at(-2);
-    dir=parent.dir;
+  if(path.length===1) dir=symbol==='.'?0:2;
+  else{
+    const prev=path.at(-2);dir=parent.dir;
     if(symbol!==prev){
-      if(prev==='.' && symbol==='-') dir=(dir+1)%4; // 右へ90度
-      if(prev==='-' && symbol==='.') dir=(dir+3)%4; // 左へ90度
+      if(prev==='.'&&symbol==='-') dir=(dir+1)%4;
+      if(prev==='-'&&symbol==='.') dir=(dir+3)%4;
     }
   }
-
   const scale=EDGE_SCALE[path]||1;
-  nodes[path]={
-    path,
-    parentPath,
-    symbol,
-    dir,
-    x:parent.x+DIRS[dir][0]*STEP*scale,
-    y:parent.y+DIRS[dir][1]*STEP*scale
-  };
+  nodes[path]={path,parentPath,symbol,dir,x:parent.x+DIRS[dir][0]*STEP*scale,y:parent.y+DIRS[dir][1]*STEP*scale};
 }
 
-// 全26文字が重ならないこと、FがVのちょうど1区画下であることを前提に固定配置。
 const positions=paths.map(p=>nodes[p]);
 const minX=Math.min(ROOT.x,...positions.map(n=>n.x))-86;
 const maxX=Math.max(ROOT.x,...positions.map(n=>n.x))+86;
-const minY=8;
 const maxY=Math.max(ROOT.y,...positions.map(n=>n.y))+70;
-svg.setAttribute('viewBox',`${minX} ${minY} ${maxX-minX} ${maxY-minY}`);
+svg.setAttribute('viewBox',`${minX} 8 ${maxX-minX} ${maxY-8}`);
+svg.setAttribute('preserveAspectRatio','xMidYMid meet');
 
-function el(tag,attrs={}){
-  const n=document.createElementNS(NS,tag);
-  for(const [k,v] of Object.entries(attrs)) n.setAttribute(k,v);
-  return n;
-}
-
-function labelPosition(node){
-  // 線の向きに対して少し外側へ文字を置く。配置は固定で、ノード自体は動かさない。
-  const side=node.x<ROOT.x?-1:1;
-  return {x:node.x+side*30,y:node.y,anchor:side<0?'end':'start'};
-}
-
+function el(tag,attrs={}){const n=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(attrs))n.setAttribute(k,v);return n}
+function labelPosition(node){const side=node.x<ROOT.x?-1:1;return{x:node.x+side*30,y:node.y,anchor:side<0?'end':'start'}}
 function buildTree(){
   svg.innerHTML='';
-
-  // START
   svg.appendChild(el('line',{x1:ROOT.x,y1:26,x2:ROOT.x,y2:ROOT.y-10,class:'wire'}));
   svg.appendChild(el('circle',{cx:ROOT.x,cy:ROOT.y,r:9,class:'root-dot'}));
-  const startText=el('text',{x:ROOT.x,y:18,class:'root-label','text-anchor':'middle'});
-  startText.textContent='START';
-  svg.appendChild(startText);
-
-  // 各枝は一度だけ描画する。
+  const st=el('text',{x:ROOT.x,y:18,class:'root-label','text-anchor':'middle'});st.textContent='START';svg.appendChild(st);
+  for(const path of paths){const n=nodes[path],p=nodes[n.parentPath];svg.appendChild(el('line',{x1:p.x,y1:p.y,x2:n.x,y2:n.y,class:'wire','data-path':path}))}
   for(const path of paths){
-    const node=nodes[path];
-    const parent=nodes[node.parentPath];
-    svg.appendChild(el('line',{
-      x1:parent.x,y1:parent.y,x2:node.x,y2:node.y,
-      class:'wire','data-path':path
-    }));
-  }
-
-  // ノードと英字
-  for(const path of paths){
-    const node=nodes[path];
-    let shape;
-    if(node.symbol==='.'){
-      shape=el('circle',{cx:node.x,cy:node.y,r:16,class:'node-shape','data-path':path});
-    }else{
-      shape=el('rect',{x:node.x-22,y:node.y-13,width:44,height:26,rx:3,class:'node-shape','data-path':path});
-    }
+    const n=nodes[path];
+    const shape=n.symbol==='.'?el('circle',{cx:n.x,cy:n.y,r:16,class:'node-shape','data-path':path}):el('rect',{x:n.x-22,y:n.y-13,width:44,height:26,rx:3,class:'node-shape','data-path':path});
     svg.appendChild(shape);
-
-    const lp=labelPosition(node);
-    const text=el('text',{x:lp.x,y:lp.y,class:'node-letter','text-anchor':lp.anchor});
-    text.textContent=MORSE[path];
-    svg.appendChild(text);
+    const lp=labelPosition(n),t=el('text',{x:lp.x,y:lp.y,class:'node-letter','text-anchor':lp.anchor});t.textContent=MORSE[path];svg.appendChild(t);
   }
 }
-
 buildTree();
 
 const tap=document.getElementById('tap');
 const morseEl=document.getElementById('morse');
 const decoded=document.getElementById('decoded');
-let start=null,pressing=false,current='',text='';
+const editor=document.getElementById('editor');
+const waitfill=document.getElementById('waitfill');
+const GAP_MS=850;
+const DASH_MS=350;
+let pressStart=0,pressing=false,current='',commitTimer=null,raf=null,gapStart=0;
+let soundOn=true,audioCtx=null,osc=null,gain=null;
 
 function render(){
   morseEl.textContent=current?current.replaceAll('.','・').replaceAll('-','－'):'—';
-  decoded.textContent=current?(MORSE[current]||'…'):(text.slice(-1)||'?');
-  svg.querySelectorAll('[data-path]').forEach(n=>{
-    n.classList.toggle('on',current.startsWith(n.dataset.path));
-  });
+  decoded.textContent=current?(MORSE[current]||'?'):'—';
+  svg.querySelectorAll('[data-path]').forEach(n=>n.classList.toggle('on',!!current&&current.startsWith(n.dataset.path)));
+}
+function scrollEditor(){editor.scrollTop=editor.scrollHeight;editor.setSelectionRange(editor.value.length,editor.value.length)}
+function appendText(s){editor.value+=s;scrollEditor()}
+function stopGapAnimation(){if(raf)cancelAnimationFrame(raf);raf=null;waitfill.style.width='0%'}
+function animateGap(){
+  const pct=Math.min(100,(performance.now()-gapStart)/GAP_MS*100);waitfill.style.width=pct+'%';
+  if(pct<100&&current&&!pressing)raf=requestAnimationFrame(animateGap);else raf=null;
+}
+function scheduleCommit(){
+  clearTimeout(commitTimer);stopGapAnimation();
+  if(!current)return;
+  gapStart=performance.now();raf=requestAnimationFrame(animateGap);
+  commitTimer=setTimeout(commitCurrent,GAP_MS);
+}
+function commitCurrent(){
+  clearTimeout(commitTimer);commitTimer=null;stopGapAnimation();
+  if(!current)return;
+  appendText(MORSE[current]||'?');
+  current='';render();
+}
+function clearCurrent(){clearTimeout(commitTimer);commitTimer=null;stopGapAnimation();current='';render()}
+
+function ensureAudio(){
+  if(!audioCtx){const AC=window.AudioContext||window.webkitAudioContext;if(AC)audioCtx=new AC()}
+  if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();
+}
+function startTone(){
+  if(!soundOn)return;ensureAudio();if(!audioCtx)return;
+  stopTone();
+  osc=audioCtx.createOscillator();gain=audioCtx.createGain();
+  osc.type='sine';osc.frequency.value=660;gain.gain.setValueAtTime(0.0001,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.22,audioCtx.currentTime+0.012);
+  osc.connect(gain);gain.connect(audioCtx.destination);osc.start();
+}
+function stopTone(){
+  if(!osc||!audioCtx)return;
+  try{gain.gain.cancelScheduledValues(audioCtx.currentTime);gain.gain.setValueAtTime(Math.max(gain.gain.value,0.0001),audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.025);osc.stop(audioCtx.currentTime+0.03)}catch(e){}
+  osc=null;gain=null;
 }
 
 function down(e){
-  if(e.cancelable)e.preventDefault();
-  if(pressing)return;
-  pressing=true;
-  start=Date.now();
-  tap.classList.add('active');
+  if(e.cancelable)e.preventDefault();if(pressing)return;
+  clearTimeout(commitTimer);commitTimer=null;stopGapAnimation();
+  pressing=true;pressStart=performance.now();tap.classList.add('active');startTone();
+  try{tap.setPointerCapture?.(e.pointerId)}catch(_){}
 }
-
 function up(e){
-  if(e.cancelable)e.preventDefault();
-  if(!pressing)return;
-  current+=Date.now()-start<350?'.':'-';
-  pressing=false;
-  start=null;
-  tap.classList.remove('active');
-  render();
+  if(e.cancelable)e.preventDefault();if(!pressing)return;
+  const ms=performance.now()-pressStart;pressing=false;tap.classList.remove('active');stopTone();
+  current+=ms<DASH_MS?'.':'-';render();scheduleCommit();
 }
 
-function clearAll(){current='';text='';render();}
-function commit(){if(current&&MORSE[current]){text+=MORSE[current];current='';render();}}
-
-tap.addEventListener('touchstart',down,{passive:false});
-tap.addEventListener('touchend',up,{passive:false});
-tap.addEventListener('touchcancel',up,{passive:false});
-tap.addEventListener('mousedown',down);
-tap.addEventListener('mouseup',up);
-tap.addEventListener('mouseleave',e=>{if(pressing)up(e)});
+tap.addEventListener('pointerdown',down);
+tap.addEventListener('pointerup',up);
+tap.addEventListener('pointercancel',up);
 tap.addEventListener('contextmenu',e=>e.preventDefault());
 tap.addEventListener('selectstart',e=>e.preventDefault());
-document.getElementById('space').onclick=commit;
-document.getElementById('clear').onclick=clearAll;
-document.getElementById('clearTop').onclick=clearAll;
+
+document.getElementById('commitNow').onclick=commitCurrent;
+document.getElementById('clearCurrent').onclick=clearCurrent;
+document.getElementById('addSpace').onclick=()=>{if(current)commitCurrent();appendText(' ')};
+document.getElementById('backspace').onclick=()=>{if(current){clearCurrent();return}editor.value=editor.value.slice(0,-1);scrollEditor()};
+document.getElementById('clearAll').onclick=()=>{clearCurrent();editor.value=''};
+document.getElementById('soundToggle').onclick=e=>{soundOn=!soundOn;e.currentTarget.textContent=soundOn?'🔊 音ON':'🔇 音OFF';if(!soundOn)stopTone()};
+
 render();
 </script>
 </body>
