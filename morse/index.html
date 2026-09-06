@@ -15,7 +15,7 @@ html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 8%,#
 body{min-height:100svh;padding:max(8px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom));overscroll-behavior:none}
 body.settings-open{overflow:hidden}
 button,.tree-wrap{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-button,input{font:inherit}
+button,input,select{font:inherit}
 .app{width:min(100%,560px);margin:auto;display:grid;gap:8px}
 .header{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:38px}
 .title{font-size:clamp(19px,6.5vw,34px);font-weight:300;letter-spacing:.14em;white-space:nowrap}
@@ -48,7 +48,7 @@ button,input{font:inherit}
 .settings-backdrop.open{display:flex}
 .settings-sheet{width:min(100%,560px);max-height:min(84svh,720px);overflow:auto;background:linear-gradient(180deg,#102534,#091723);border:1px solid #355263;border-radius:22px 22px 16px 16px;box-shadow:0 -14px 50px rgba(0,0,0,.45);padding:13px}
 .settings-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.settings-title{font-size:19px;font-weight:800;letter-spacing:.04em}.close-settings{width:38px;height:38px;padding:0;border-radius:11px;font-size:20px}
-.preview{background:#06121b;border:1px solid #284554;border-radius:15px;padding:10px 12px;margin-bottom:11px;text-align:center}.preview-top{display:flex;align-items:center;justify-content:center;gap:7px;color:#a7bac7;font-size:11px}.preview-led{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 9px var(--green)}.preview-code{font:800 25px/1.25 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;margin-top:5px}.preview-current{height:20px;margin-top:2px;color:var(--green);font-size:13px;font-weight:800}.setting-row{background:#0a1924;border:1px solid #294451;border-radius:15px;padding:11px;margin-top:9px}.setting-name{font-size:14px;font-weight:800}.setting-help{font-size:10px;color:#8499a8;margin-top:3px;line-height:1.45}.setting-control{display:grid;grid-template-columns:1fr 94px;gap:10px;align-items:center;margin-top:10px}.setting-control input[type="range"]{width:100%;accent-color:var(--green)}.number-wrap{display:flex;align-items:center;gap:4px}.number-wrap input{width:67px;background:#06121b;color:#fff;border:1px solid #3a596a;border-radius:9px;padding:8px 6px;text-align:right;font-weight:750;outline:none}.number-wrap input:focus{border-color:var(--green)}.unit{font-size:11px;color:#9aafbc}.scale-labels{display:flex;justify-content:space-between;color:#6f8796;font-size:9px;margin-top:1px}.setting-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px}.settings-note{font-size:9px;color:#718794;line-height:1.45;margin:8px 2px 0;text-align:center}
+.preview{background:#06121b;border:1px solid #284554;border-radius:15px;padding:10px 12px;margin-bottom:11px;text-align:center}.preview-top{display:flex;align-items:center;justify-content:center;gap:7px;color:#a7bac7;font-size:11px}.preview-led{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 9px var(--green)}.preview-code{font:800 25px/1.25 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;margin-top:5px}.preview-current{height:20px;margin-top:2px;color:var(--green);font-size:13px;font-weight:800}.setting-row{background:#0a1924;border:1px solid #294451;border-radius:15px;padding:11px;margin-top:9px}.setting-name{font-size:14px;font-weight:800}.setting-help{font-size:10px;color:#8499a8;margin-top:3px;line-height:1.45}.setting-control{display:grid;grid-template-columns:1fr 94px;gap:10px;align-items:center;margin-top:10px}.setting-control input[type="range"]{width:100%;accent-color:var(--green)}.number-wrap{display:flex;align-items:center;gap:4px}.number-wrap input{width:67px;background:#06121b;color:#fff;border:1px solid #3a596a;border-radius:9px;padding:8px 6px;text-align:right;font-weight:750;outline:none}.number-wrap input:focus{border-color:var(--green)}.unit{font-size:11px;color:#9aafbc}.scale-labels{display:flex;justify-content:space-between;color:#6f8796;font-size:9px;margin-top:1px}.setting-select{width:100%;margin-top:10px;background:#06121b;color:#fff;border:1px solid #3a596a;border-radius:10px;padding:9px 10px;font-weight:750;outline:none}.setting-select:focus{border-color:var(--green)}.setting-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px}.settings-note{font-size:9px;color:#718794;line-height:1.45;margin:8px 2px 0;text-align:center}
 
 @media(max-width:380px){
   body{padding-left:6px;padding-right:6px}.app{gap:6px}.title{font-size:18px;letter-spacing:.08em}.header-actions{gap:3px}.header-actions .mini{padding:7px 7px;font-size:11px}.mode-tab{padding:7px 8px;font-size:11px}.tree-stage{height:clamp(185px,33svh,260px)}.tree-title{font-size:9px}.node-letter{font-size:20px}.work{padding:6px;gap:5px}#editor,#morseEditor{padding:8px 9px}#editor{height:70px}#morseEditor{height:52px}.readout{min-height:48px;padding:5px}.label{font-size:8px}#tap{height:100px;border-radius:18px}.bottom{gap:5px}.btn{padding:8px 5px}.hint{font-size:9px}.settings-backdrop{padding-left:5px;padding-right:5px}.settings-sheet{padding:10px;max-height:88svh}.setting-control{grid-template-columns:1fr 86px;gap:7px}.number-wrap input{width:60px}.preview-code{font-size:22px}
@@ -92,7 +92,7 @@ button,input{font:inherit}
     <div class="editor-head">
       <div class="editor-title">MORSE EDITOR</div>
     </div>
-    <textarea id="morseEditor" aria-label="認識されたモールス列" placeholder="・・・ －－－ ・・・"></textarea>
+    <textarea id="morseEditor" aria-label="認識されたモールス列" placeholder="・・・/－－－/・・・/"></textarea>
 
     <div class="status">
       <div class="readout"><div class="label">入力中</div><div id="morse" class="morse">—</div></div>
@@ -140,6 +140,15 @@ button,input{font:inherit}
         <div class="number-wrap"><input id="gapNumber" type="number" inputmode="numeric" min="300" max="2000" step="50" /><span class="unit">ms</span></div>
       </div>
       <div class="scale-labels"><span>速く確定</span><span>デフォルト 850ms</span><span>ゆっくり</span></div>
+    </div>
+
+    <div class="setting-row">
+      <div class="setting-name">モールス出力の文字区切り</div>
+      <div class="setting-help">MORSE EDITORで1文字の認識が確定した直後に追加する区切りです。既存の内容は変更しません。</div>
+      <select id="separatorSelect" class="setting-select" aria-label="モールス出力の文字区切り">
+        <option value="slash">/（スラッシュ・デフォルト）</option>
+        <option value="space">半角スペース</option>
+      </select>
     </div>
 
     <div class="setting-actions">
@@ -231,7 +240,7 @@ function buildTree(){
   for(const path of paths){
     const n=nodes[path];
     let shape;
-    if(n.symbol==='.'){
+    if(n.symbol==='.'){ 
       shape=el('circle',{cx:n.x,cy:n.y,r:16,class:'node-shape','data-path':path});
     }else{
       const dashW=n.x<ROOT.x?38:44;
@@ -247,9 +256,11 @@ function buildTree(){
 
 const DEFAULT_DASH_MS=180;
 const DEFAULT_GAP_MS=850;
+const DEFAULT_SEPARATOR='slash';
 const DASH_MIN=80,DASH_MAX=500,GAP_MIN=300,GAP_MAX=2000;
 const DASH_KEY='morse_dash_threshold';
 const GAP_KEY='morse_character_gap';
+const SEPARATOR_KEY='morse_output_separator';
 
 function clamp(v,min,max){return Math.min(max,Math.max(min,v))}
 function loadSetting(key,fallback,min,max){
@@ -258,10 +269,15 @@ function loadSetting(key,fallback,min,max){
     return Number.isFinite(v)&&v>=min&&v<=max?v:fallback;
   }catch(_){return fallback}
 }
+function loadSeparator(){
+  try{return localStorage.getItem(SEPARATOR_KEY)==='space'?'space':DEFAULT_SEPARATOR}catch(_){return DEFAULT_SEPARATOR}
+}
 function saveSetting(key,value){try{localStorage.setItem(key,String(value))}catch(_){}}
+function morseSeparator(){return MORSE_SEPARATOR==='space'?' ':'/'}
 
 let DASH_MS=loadSetting(DASH_KEY,DEFAULT_DASH_MS,DASH_MIN,DASH_MAX);
 let GAP_MS=loadSetting(GAP_KEY,DEFAULT_GAP_MS,GAP_MIN,GAP_MAX);
+let MORSE_SEPARATOR=loadSeparator();
 
 const tap=document.getElementById('tap');
 const tapSub=document.getElementById('tapSub');
@@ -302,8 +318,7 @@ function scrollMorseEditor(){morseEditor.scrollTop=morseEditor.scrollHeight;mors
 function appendText(s){editor.value+=s;scrollEditor()}
 function formatMorse(code){return code.replaceAll('.','・').replaceAll('-','－')}
 function appendMorse(code){
-  if(morseEditor.value&&!/[\s]$/.test(morseEditor.value))morseEditor.value+=' ';
-  morseEditor.value+=formatMorse(code);scrollMorseEditor();
+  morseEditor.value+=formatMorse(code)+morseSeparator();scrollMorseEditor();
 }
 function stopGapAnimation(){if(raf)cancelAnimationFrame(raf);raf=null;waitfill.style.width='0%'}
 function animateGap(){
@@ -376,12 +391,14 @@ const dashRange=document.getElementById('dashRange');
 const dashNumber=document.getElementById('dashNumber');
 const gapRange=document.getElementById('gapRange');
 const gapNumber=document.getElementById('gapNumber');
+const separatorSelect=document.getElementById('separatorSelect');
 const previewCurrent=document.getElementById('previewCurrent');
 let settingsOpen=false,previewToken=0,previewOsc=null,previewGain=null;
 
 function syncSettingsUI(){
   dashRange.value=DASH_MS;dashNumber.value=DASH_MS;
   gapRange.value=GAP_MS;gapNumber.value=GAP_MS;
+  separatorSelect.value=MORSE_SEPARATOR;
 }
 function applyDash(value){
   const v=clamp(Math.round(Number(value)||DEFAULT_DASH_MS),DASH_MIN,DASH_MAX);
@@ -393,11 +410,16 @@ function applyGap(value){
   if(current&&!pressing)scheduleCommit();
   restartPreview();
 }
+function applySeparator(value){
+  MORSE_SEPARATOR=value==='space'?'space':DEFAULT_SEPARATOR;
+  saveSetting(SEPARATOR_KEY,MORSE_SEPARATOR);syncSettingsUI();
+}
 
 dashRange.addEventListener('input',e=>applyDash(e.target.value));
 gapRange.addEventListener('input',e=>applyGap(e.target.value));
 dashNumber.addEventListener('change',e=>applyDash(e.target.value));
 gapNumber.addEventListener('change',e=>applyGap(e.target.value));
+separatorSelect.addEventListener('change',e=>applySeparator(e.target.value));
 dashNumber.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();applyDash(e.currentTarget.value);e.currentTarget.blur()}});
 gapNumber.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();applyGap(e.currentTarget.value);e.currentTarget.blur()}});
 
@@ -460,7 +482,7 @@ function closeSettings(){
 document.getElementById('openSettings').onclick=openSettings;
 document.getElementById('closeSettings').onclick=closeSettings;
 document.getElementById('doneSettings').onclick=closeSettings;
-document.getElementById('resetSettings').onclick=()=>{DASH_MS=DEFAULT_DASH_MS;GAP_MS=DEFAULT_GAP_MS;saveSetting(DASH_KEY,DASH_MS);saveSetting(GAP_KEY,GAP_MS);syncSettingsUI();render();if(current&&!pressing)scheduleCommit();restartPreview()};
+document.getElementById('resetSettings').onclick=()=>{DASH_MS=DEFAULT_DASH_MS;GAP_MS=DEFAULT_GAP_MS;MORSE_SEPARATOR=DEFAULT_SEPARATOR;saveSetting(DASH_KEY,DASH_MS);saveSetting(GAP_KEY,GAP_MS);saveSetting(SEPARATOR_KEY,MORSE_SEPARATOR);syncSettingsUI();render();if(current&&!pressing)scheduleCommit();restartPreview()};
 settingsBackdrop.addEventListener('pointerdown',e=>{if(e.target===settingsBackdrop)closeSettings()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&settingsOpen)closeSettings()});
 
